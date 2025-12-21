@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Try OTTO Free - Interactive Demo</title>
+    <meta name="description" content="Build your own AI assistant in minutes. See exactly how OTTO would work for your business.">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .demo-hero {
+            padding: 120px 0 var(--spacing-2xl);
+            text-align: center;
+            background: linear-gradient(135deg, var(--color-bg) 0%, #0d1a13 100%);
+        }
+
+        .demo-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-2xl);
+            margin-top: var(--spacing-2xl);
+        }
+
+        .demo-form {
+            background-color: var(--color-bg-card);
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--color-border);
+        }
+
+        .demo-form h3 {
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-lg);
+            font-size: 20px;
+        }
+
+        .form-section {
+            margin-bottom: var(--spacing-xl);
+            padding-bottom: var(--spacing-xl);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+        }
+
+        .form-section h4 {
+            color: var(--color-text);
+            font-size: 16px;
+            margin-bottom: var(--spacing-md);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-sm);
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: var(--spacing-sm);
+            background-color: var(--color-bg);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            color: var(--color-text);
+            font-size: 14px;
+            font-family: var(--font-primary);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+
+        input[type="color"] {
+            height: 50px;
+            cursor: pointer;
+        }
+
+        .logo-upload {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .logo-preview {
+            width: 60px;
+            height: 60px;
+            background-color: var(--color-bg);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        .logo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: var(--radius-sm);
+        }
+
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .faq-item-builder {
+            background-color: var(--color-bg);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--color-border);
+        }
+
+        .faq-item-builder input {
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .add-faq-btn, .remove-faq-btn {
+            padding: var(--spacing-sm) var(--spacing-md);
+            font-size: 12px;
+            margin-top: var(--spacing-sm);
+        }
+
+        .remove-faq-btn {
+            background-color: #ff4444;
+            border-color: #ff4444;
+        }
+
+        .demo-preview {
+            position: sticky;
+            top: 100px;
+        }
+
+        .preview-window {
+            background-color: var(--color-bg-card);
+            border: 2px solid var(--color-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            min-height: 600px;
+        }
+
+        .preview-header {
+            text-align: center;
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .preview-header h3 {
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .preview-header p {
+            color: var(--color-text-secondary);
+            font-size: 14px;
+        }
+
+        .chatbot-preview-container {
+            position: relative;
+            height: 400px;
+            background-color: var(--color-bg);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+            padding: var(--spacing-lg);
+        }
+
+        .demo-actions {
+            margin-top: var(--spacing-lg);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        @media (max-width: 968px) {
+            .demo-container {
+                grid-template-columns: 1fr;
+            }
+
+            .demo-preview {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <span class="logo-text">OTTO</span>
+                    <span class="logo-subtext">AUTOMATION</span>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="index.html#how-it-works">How It Works</a>
+                    <a href="index.html#features">Features</a>
+                    <a href="pricing.html">Pricing</a>
+                    <a href="why-otto.html">Why OTTO?</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="try-demo.html" class="btn-primary">Try It Free</a>
+                </div>
+                <div class="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="demo-hero">
+        <div class="container">
+            <h1 class="hero-title">Try OTTO Free</h1>
+            <p class="hero-subtitle">Build your own AI assistant in minutes. See exactly how OTTO would work for your business.</p>
+            <p style="color: var(--color-text-secondary); margin-top: var(--spacing-md);">No credit card required • Instant setup • See real results</p>
+        </div>
+    </section>
+
+    <!-- Demo Builder -->
+    <section style="padding: var(--spacing-3xl) 0; background-color: var(--color-bg);">
+        <div class="container">
+            <div class="demo-container">
+                <!-- Form -->
+                <div class="demo-form">
+                    <h3>Customize Your AI Assistant</h3>
+                    <p style="color: var(--color-text-secondary); font-size: 14px; margin-bottom: var(--spacing-xl);">Fill out the details below and watch your AI assistant come to life in real-time!</p>
+
+                    <form id="demoForm">
+                        <!-- Business Info -->
+                        <div class="form-section">
+                            <h4>Business Information</h4>
+                            <div class="form-group">
+                                <label>Business Name *</label>
+                                <input type="text" id="businessName" required placeholder="Acme Corp">
+                            </div>
+                            <div class="form-group">
+                                <label>Industry *</label>
+                                <select id="industry" required>
+                                    <option value="">Select your industry...</option>
+                                    <option value="Home Services">Home Services (Plumbing, HVAC, etc.)</option>
+                                    <option value="Professional Services">Professional Services (Law, Accounting, etc.)</option>
+                                    <option value="Health & Wellness">Health & Wellness (Medical, Dental, etc.)</option>
+                                    <option value="E-Commerce">E-Commerce</option>
+                                    <option value="Real Estate">Real Estate</option>
+                                    <option value="Restaurants">Restaurants & Food</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Branding -->
+                        <div class="form-section">
+                            <h4>Branding</h4>
+                            <div class="form-group">
+                                <label>Logo (Optional)</label>
+                                <div class="logo-upload">
+                                    <div class="logo-preview" id="logoPreview">
+                                        AC
+                                    </div>
+                                    <input type="file" id="logoUpload" accept="image/*" style="flex: 1;">
+                                </div>
+                                <p style="color: var(--color-text-secondary); font-size: 12px; margin-top: 5px;">Upload your logo or we'll use your initials</p>
+                            </div>
+                            <div class="form-group">
+                                <label>Brand Color *</label>
+                                <input type="color" id="brandColor" value="#3AB573" required>
+                            </div>
+                        </div>
+
+                        <!-- FAQs -->
+                        <div class="form-section">
+                            <h4>FAQs (Add 2-5)</h4>
+                            <p style="color: var(--color-text-secondary); font-size: 12px; margin-bottom: var(--spacing-md);">What questions do your customers commonly ask?</p>
+                            <div class="faq-list" id="faqList">
+                                <div class="faq-item-builder">
+                                    <input type="text" placeholder="Question (e.g., What are your hours?)" class="faq-question" required>
+                                    <textarea placeholder="Answer (e.g., We're open Mon-Fri 9am-6pm)" class="faq-answer" rows="2" required></textarea>
+                                </div>
+                            </div>
+                            <button type="button" class="btn-secondary add-faq-btn" id="addFaqBtn">+ Add Another FAQ</button>
+                        </div>
+
+                        <!-- Business Details -->
+                        <div class="form-section">
+                            <h4>Business Details</h4>
+                            <div class="form-group">
+                                <label>Business Hours</label>
+                                <input type="text" id="businessHours" placeholder="Mon-Fri 9am-6pm">
+                            </div>
+                            <div class="form-group">
+                                <label>Booking Link (Optional)</label>
+                                <input type="url" id="bookingLink" placeholder="https://calendly.com/your-link">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Preview -->
+                <div class="demo-preview">
+                    <div class="preview-window">
+                        <div class="preview-header">
+                            <h3>Live Preview</h3>
+                            <p>This is how OTTO will look on your website</p>
+                        </div>
+
+                        <div class="chatbot-preview-container" id="chatbotPreview">
+                            <!-- Chatbot will be injected here -->
+                            <div style="text-align: center; padding-top: 100px; color: var(--color-text-secondary);">
+                                <p>👆 Fill out the form to see your AI assistant</p>
+                            </div>
+                        </div>
+
+                        <div class="demo-actions">
+                            <button class="btn-primary btn-large" id="launchDemoBtn" disabled>Launch Demo Chat</button>
+                            <button class="btn-secondary btn-large" id="viewDashboardBtn" disabled>View Your Dashboard</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>OTTO AUTOMATION</h4>
+                    <ul>
+                        <li><a href="why-otto.html">About Us</a></li>
+                        <li><a href="index.html#how-it-works">How It Works</a></li>
+                        <li><a href="pricing.html">Pricing</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="index.html#features">Features</a></li>
+                        <li><a href="#">Integrations</a></li>
+                        <li><a href="#">Security</a></li>
+                        <li><a href="#">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="contact.html">Contact Support</a></li>
+                        <li><a href="try-demo.html">Try Free Demo</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">System Status</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">GDPR Compliance</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 OTTO Automation | Blackwell, Texas, US</p>
+                <div class="trust-badges">
+                    <span>🔒 SSL Secure</span>
+                    <span>✓ GDPR Compliant</span>
+                    <span>⚡ 99.9% Uptime</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="demo-builder.js"></script>
+</body>
+</html>
