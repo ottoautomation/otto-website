@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - OTTO Automation</title>
+    <meta name="description" content="Get in touch with OTTO Automation. Book a demo, ask questions, or start your automation journey today.">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .contact-hero {
+            padding: 120px 0 var(--spacing-2xl);
+            text-align: center;
+            background: linear-gradient(135deg, var(--color-bg) 0%, #0d1a13 100%);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-3xl);
+            margin-top: var(--spacing-3xl);
+        }
+
+        .contact-form {
+            background-color: var(--color-bg-card);
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--color-border);
+        }
+
+        .form-group {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--color-text);
+            margin-bottom: var(--spacing-sm);
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: var(--spacing-md);
+            background-color: var(--color-bg);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            color: var(--color-text);
+            font-size: 16px;
+            font-family: var(--font-primary);
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(58, 181, 115, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .contact-info-card {
+            background-color: var(--color-bg-card);
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--color-border);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .contact-info-card h3 {
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-md);
+            font-size: 20px;
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md) 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .contact-method:last-child {
+            border-bottom: none;
+        }
+
+        .contact-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .contact-method-info h4 {
+            color: var(--color-text);
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .contact-method-info p {
+            color: var(--color-text-secondary);
+            font-size: 14px;
+        }
+
+        .contact-method-info a {
+            color: var(--color-primary);
+        }
+
+        .hours-card {
+            background-color: var(--color-bg-light);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+            margin-top: var(--spacing-md);
+        }
+
+        .hours-card p {
+            color: var(--color-text-secondary);
+            font-size: 14px;
+            margin: 5px 0;
+        }
+
+        .hours-card strong {
+            color: var(--color-primary);
+        }
+
+        @media (max-width: 968px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <span class="logo-text">OTTO</span>
+                    <span class="logo-subtext">AUTOMATION</span>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="index.html#how-it-works">How It Works</a>
+                    <a href="index.html#features">Features</a>
+                    <a href="pricing.html">Pricing</a>
+                    <a href="why-otto.html">Why OTTO?</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="index.html#demo" class="btn-primary">Book a Demo</a>
+                </div>
+                <div class="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="contact-hero">
+        <div class="container">
+            <h1 class="hero-title">Get In Touch</h1>
+            <p class="hero-subtitle">Have questions? Want to see a demo? We'd love to hear from you.</p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section style="padding: var(--spacing-3xl) 0; background-color: var(--color-bg);">
+        <div class="container">
+            <div class="contact-grid">
+                <!-- Contact Form -->
+                <div>
+                    <div class="contact-form">
+                        <h2 style="color: var(--color-primary); margin-bottom: var(--spacing-lg);">Send Us a Message</h2>
+                        <form id="contactForm">
+                            <div class="form-group">
+                                <label for="name">Your Name</label>
+                                <input type="text" id="name" name="name" required placeholder="John Smith">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" name="email" required placeholder="john@company.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number (Optional)</label>
+                                <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567">
+                            </div>
+                            <div class="form-group">
+                                <label for="business">Business Name (Optional)</label>
+                                <input type="text" id="business" name="business" placeholder="Your Company LLC">
+                            </div>
+                            <div class="form-group">
+                                <label for="subject">What Can We Help With?</label>
+                                <select id="subject" name="subject" required>
+                                    <option value="">Select an option...</option>
+                                    <option value="demo">Book a Demo</option>
+                                    <option value="pricing">Pricing Questions</option>
+                                    <option value="technical">Technical Support</option>
+                                    <option value="partnership">Partnership Inquiry</option>
+                                    <option value="other">General Question</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Your Message</label>
+                                <textarea id="message" name="message" required placeholder="Tell us more about your needs..."></textarea>
+                            </div>
+                            <button type="submit" class="btn-primary" style="width: 100%;">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <div class="contact-info-card">
+                        <h3>Contact Information</h3>
+
+                        <div class="contact-method">
+                            <div class="contact-icon">📧</div>
+                            <div class="contact-method-info">
+                                <h4>Email</h4>
+                                <p><a href="mailto:ottoai.official@gmail.com">ottoai.official@gmail.com</a></p>
+                                <p style="margin-top: 5px;">We typically respond within 4 hours</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-method">
+                            <div class="contact-icon">📍</div>
+                            <div class="contact-method-info">
+                                <h4>Location</h4>
+                                <p>Blackwell, Texas, US</p>
+                                <p style="margin-top: 5px;">Serving businesses nationwide</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-method">
+                            <div class="contact-icon">🗓️</div>
+                            <div class="contact-method-info">
+                                <h4>Schedule a Call</h4>
+                                <p><a href="index.html#demo">Book a demo call →</a></p>
+                                <p style="margin-top: 5px;">15-30 minute consultation</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-card">
+                        <h3>Office Hours</h3>
+                        <div class="hours-card">
+                            <p><strong>Monday - Friday:</strong> 9:00 AM - 6:00 PM CST</p>
+                            <p><strong>Saturday - Sunday:</strong> Closed</p>
+                            <p style="margin-top: var(--spacing-sm); color: var(--color-primary);">
+                                <em>OTTO never sleeps though! Your chatbot is available 24/7.</em>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, var(--color-primary) 0%, #2d9c5f 100%); padding: var(--spacing-xl); border-radius: var(--radius-lg); text-align: center; color: var(--color-bg);">
+                        <h3 style="color: var(--color-bg); margin-bottom: var(--spacing-md);">Ready to Get Started?</h3>
+                        <p style="color: rgba(0,0,0,0.8); margin-bottom: var(--spacing-lg);">Skip the contact form and jump straight into a demo</p>
+                        <a href="index.html#demo" class="btn-secondary" style="background-color: var(--color-bg); color: var(--color-primary); border-color: var(--color-bg);">Book a Free Demo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq" style="background-color: var(--color-bg-light);">
+        <div class="container">
+            <h2 class="section-title">Common Questions</h2>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h3>How quickly will you respond?</h3>
+                    <p>We typically respond to emails within 4 hours during business hours. For urgent matters, use our demo booking system for immediate scheduling.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Do you offer phone support?</h3>
+                    <p>We primarily use email and scheduled calls to ensure quality responses. Book a call through our demo system for direct conversation.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Can I get a custom quote?</h3>
+                    <p>Absolutely! Contact us with your specific needs and we'll create a tailored solution for your business.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Do you offer technical support?</h3>
+                    <p>Yes! All plans include email support. Pro and Elite plans get priority response times (4 hours and 2 hours respectively).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>OTTO AUTOMATION</h4>
+                    <ul>
+                        <li><a href="why-otto.html">About Us</a></li>
+                        <li><a href="index.html#how-it-works">How It Works</a></li>
+                        <li><a href="pricing.html">Pricing</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="index.html#features">Features</a></li>
+                        <li><a href="#">Integrations</a></li>
+                        <li><a href="#">Security</a></li>
+                        <li><a href="#">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="contact.html">Contact Support</a></li>
+                        <li><a href="index.html#demo">Schedule a Demo</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">System Status</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">GDPR Compliance</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 OTTO Automation | Blackwell, Texas, US</p>
+                <div class="trust-badges">
+                    <span>🔒 SSL Secure</span>
+                    <span>✓ GDPR Compliant</span>
+                    <span>⚡ 99.9% Uptime</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Contact form handling
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Get form data
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+
+            // In production, send this to your backend/email service
+            console.log('Form submitted:', data);
+
+            // Show success message (customize this)
+            alert('Thank you for your message! We\'ll get back to you within 4 hours.');
+
+            // Reset form
+            this.reset();
+
+            // TODO: Integrate with your email service (e.g., FormSpree, EmailJS, or your backend)
+        });
+    </script>
+</body>
+</html>
