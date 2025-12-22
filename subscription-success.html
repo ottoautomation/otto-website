@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription Active - OTTO Automation</title>
+    <style>
+        :root {
+            --color-primary: #3AB573;
+            --color-primary-dark: #2d9c5f;
+            --color-text: #1e293b;
+            --color-text-secondary: #64748b;
+            --color-bg: #ffffff;
+            --color-bg-alt: #f8fafc;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #3AB573 0%, #2d9c5f 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-lg);
+        }
+
+        .success-container {
+            background: white;
+            border-radius: 16px;
+            padding: var(--spacing-xl);
+            max-width: 650px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .checkmark {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--color-primary);
+            margin: 0 auto var(--spacing-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        .checkmark svg {
+            width: 60px;
+            height: 60px;
+            stroke: white;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+            animation: checkmark 0.5s ease-out 0.3s forwards;
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes checkmark {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        h1 {
+            color: var(--color-text);
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .subtitle {
+            color: var(--color-primary);
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        p {
+            color: var(--color-text-secondary);
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .plan-badge {
+            display: inline-block;
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: var(--spacing-lg);
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .plan-badge.starter {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+        }
+
+        .plan-badge.pro {
+            background: linear-gradient(135deg, var(--color-primary) 0%, #2d9c5f 100%);
+        }
+
+        .plan-badge.elite {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+        }
+
+        .next-steps {
+            background: var(--color-bg-alt);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+            text-align: left;
+        }
+
+        .next-steps h3 {
+            color: var(--color-text);
+            font-size: 18px;
+            margin-bottom: var(--spacing-md);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .step-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .step-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+            color: var(--color-text-secondary);
+        }
+
+        .step-list li:last-child {
+            border-bottom: none;
+        }
+
+        .step-number {
+            width: 28px;
+            height: 28px;
+            background: var(--color-primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .step-content strong {
+            color: var(--color-text);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 2px solid #f59e0b;
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .highlight-box h3 {
+            color: #92400e;
+            font-size: 18px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .highlight-box p {
+            color: #a16207;
+            margin-bottom: 0;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background: var(--color-primary);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            margin: var(--spacing-sm);
+        }
+
+        .btn-primary:hover {
+            background: var(--color-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(58, 181, 115, 0.3);
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            background: transparent;
+            color: var(--color-text-secondary);
+            padding: 14px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+            margin: var(--spacing-sm);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--color-primary);
+            animation: confetti-fall 3s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(720deg);
+            }
+        }
+
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 24px;
+            }
+            .subtitle {
+                font-size: 16px;
+            }
+            .success-container {
+                padding: var(--spacing-lg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <div class="checkmark">
+            <svg viewBox="0 0 52 52">
+                <polyline points="14 27 22 35 38 19"/>
+            </svg>
+        </div>
+
+        <h1>You're All Set!</h1>
+        <div class="subtitle">Your OTTO subscription is now active</div>
+
+        <div id="planBadge" class="plan-badge"></div>
+
+        <p>Congratulations! Your setup is complete and our team is now building your custom AI assistant.</p>
+
+        <div class="next-steps">
+            <h3>What Happens Next</h3>
+            <ul class="step-list">
+                <li>
+                    <span class="step-number">1</span>
+                    <div class="step-content">
+                        <strong>We Build Your AI Assistant</strong>
+                        Our team uses the information you provided to create your custom chatbot.
+                    </div>
+                </li>
+                <li>
+                    <span class="step-number">2</span>
+                    <div class="step-content">
+                        <strong>Custom AI Preview (3-7 business days)</strong>
+                        You'll receive an email with a preview link to test your AI assistant.
+                    </div>
+                </li>
+                <li>
+                    <span class="step-number">3</span>
+                    <div class="step-content">
+                        <strong>Embed Code & Instructions</strong>
+                        We'll send you the embed code and step-by-step instructions to add OTTO to your website.
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <h3>Check Your Email</h3>
+            <p>Look out for an email from OTTO Automation within 3-7 business days with your custom AI preview, embed code, and instructions.</p>
+        </div>
+
+        <div style="margin-top: var(--spacing-xl);">
+            <a href="index.html" class="btn-primary">Back to Home</a>
+            <a href="contact.html" class="btn-secondary">Contact Support</a>
+        </div>
+    </div>
+
+    <script>
+        // Get plan from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const plan = urlParams.get('plan') || 'starter';
+
+        // Update badge
+        const badge = document.getElementById('planBadge');
+        badge.className = `plan-badge ${plan.toLowerCase()}`;
+        badge.textContent = plan.charAt(0).toUpperCase() + plan.slice(1) + ' Plan - Active';
+
+        // Confetti celebration effect
+        function createConfetti() {
+            const colors = ['#3AB573', '#60a5fa', '#fbbf24', '#f472b6', '#a78bfa'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.width = Math.random() * 10 + 5 + 'px';
+                    confetti.style.height = Math.random() * 10 + 5 + 'px';
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    document.body.appendChild(confetti);
+
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 30);
+            }
+        }
+
+        // Trigger confetti on load
+        createConfetti();
+
+        // Track subscription activation (optional - integrate with analytics)
+        console.log('Subscription activated for plan:', plan);
+    </script>
+</body>
+</html>

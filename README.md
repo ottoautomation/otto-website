@@ -72,7 +72,7 @@ otto-website/
 - 3 pricing tiers (Starter, Pro, Elite)
 - "Most Popular" badge on Pro
 - Clear feature lists with checkmarks
-- 30-day money-back guarantee banner
+- Cancellation policy banner
 - Full comparison table
 - Pricing FAQ
 

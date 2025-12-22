@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTTO - Client Submissions</title>
+    <style>
+        :root {
+            --color-primary: #3AB573;
+            --color-primary-dark: #2d9c5f;
+            --color-text: #1e293b;
+            --color-text-secondary: #64748b;
+            --color-bg: #f8fafc;
+            --color-border: #e2e8f0;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--color-bg);
+            color: var(--color-text);
+            padding: var(--spacing-lg);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: var(--spacing-lg);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: var(--spacing-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 24px;
+            color: var(--color-text);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .stat-card {
+            background: white;
+            padding: var(--spacing-lg);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card h3 {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        .filters {
+            background: white;
+            padding: var(--spacing-md);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: var(--spacing-lg);
+            display: flex;
+            gap: var(--spacing-md);
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 2px solid var(--color-border);
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+        }
+
+        .filter-btn.active {
+            background: var(--color-primary);
+            border-color: var(--color-primary);
+            color: white;
+        }
+
+        .submissions-list {
+            display: grid;
+            gap: var(--spacing-md);
+        }
+
+        .submission-card {
+            background: white;
+            padding: var(--spacing-lg);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--color-primary);
+            transition: all 0.3s ease;
+        }
+
+        .submission-card.starter { border-left-color: #3b82f6; }
+        .submission-card.pro { border-left-color: #3AB573; }
+        .submission-card.elite { border-left-color: #f59e0b; }
+
+        .submission-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .submission-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: var(--spacing-md);
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+        }
+
+        .submission-title {
+            flex: 1;
+        }
+
+        .submission-title h3 {
+            font-size: 20px;
+            color: var(--color-text);
+            margin-bottom: 4px;
+        }
+
+        .submission-title .industry {
+            color: var(--color-text-secondary);
+            font-size: 14px;
+        }
+
+        .plan-badge {
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: white;
+        }
+
+        .plan-badge.starter {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+        }
+
+        .plan-badge.pro {
+            background: linear-gradient(135deg, var(--color-primary) 0%, #2d9c5f 100%);
+        }
+
+        .plan-badge.elite {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+        }
+
+        .submission-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-size: 14px;
+        }
+
+        .meta-item strong {
+            color: var(--color-text);
+            font-weight: 600;
+            margin-right: 4px;
+        }
+
+        .meta-item span {
+            color: var(--color-text-secondary);
+        }
+
+        .submission-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-md);
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--color-primary-dark);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-text);
+            border: 2px solid var(--color-border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--color-text);
+        }
+
+        .btn-danger {
+            background: transparent;
+            color: #ef4444;
+            border: 2px solid #fecaca;
+        }
+
+        .btn-danger:hover {
+            background: #fef2f2;
+            border-color: #ef4444;
+        }
+
+        .empty-state {
+            background: white;
+            padding: var(--spacing-xl);
+            border-radius: 12px;
+            text-align: center;
+            color: var(--color-text-secondary);
+        }
+
+        .empty-state h3 {
+            color: var(--color-text);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .submission-details {
+            display: none;
+            margin-top: var(--spacing-md);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .submission-details.active {
+            display: block;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+        }
+
+        .detail-section {
+            background: var(--color-bg);
+            padding: var(--spacing-md);
+            border-radius: 8px;
+        }
+
+        .detail-section h4 {
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-sm);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .detail-section li {
+            padding: 6px 0;
+            color: var(--color-text-secondary);
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+        }
+
+        .detail-section li:last-child {
+            border-bottom: none;
+        }
+
+        .detail-section li strong {
+            color: var(--color-text);
+        }
+
+        .feature-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: var(--spacing-sm);
+        }
+
+        .feature-tag {
+            background: rgba(58, 181, 115, 0.1);
+            color: var(--color-primary);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .faq-item {
+            background: white;
+            padding: var(--spacing-sm);
+            border-radius: 6px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .faq-item strong {
+            color: var(--color-text);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .faq-item span {
+            color: var(--color-text-secondary);
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .submission-header {
+                flex-direction: column;
+            }
+
+            .filters {
+                flex-direction: column;
+            }
+
+            .filter-btn {
+                width: 100%;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>OTTO Client Submissions</h1>
+            <div class="header-actions">
+                <button class="btn btn-secondary" onclick="refreshSubmissions()">
+                    Refresh
+                </button>
+                <button class="btn btn-secondary" onclick="exportAllSubmissions()">
+                    Export All
+                </button>
+            </div>
+        </header>
+
+        <div class="stats">
+            <div class="stat-card">
+                <h3>Total Submissions</h3>
+                <div class="value" id="totalSubmissions">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Starter Plan</h3>
+                <div class="value" id="starterCount">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Pro Plan</h3>
+                <div class="value" id="proCount">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Elite Plan</h3>
+                <div class="value" id="eliteCount">0</div>
+            </div>
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">All Submissions</button>
+            <button class="filter-btn" data-filter="starter">Starter</button>
+            <button class="filter-btn" data-filter="pro">Pro</button>
+            <button class="filter-btn" data-filter="elite">Elite</button>
+        </div>
+
+        <div id="submissionsList" class="submissions-list">
+            <div class="empty-state">
+                <h3>No submissions yet</h3>
+                <p>Client onboarding submissions will appear here</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let submissions = [];
+        let currentFilter = 'all';
+
+        // Load submissions from localStorage
+        function loadSubmissions() {
+            submissions = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('otto_onboarding_')) {
+                    try {
+                        const data = JSON.parse(localStorage.getItem(key));
+                        data.id = key;
+                        submissions.push(data);
+                    } catch (e) {
+                        console.error('Error parsing submission:', key);
+                    }
+                }
+            }
+
+            // Sort by timestamp (newest first)
+            submissions.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+            updateStats();
+            renderSubmissions();
+        }
+
+        // Update statistics
+        function updateStats() {
+            document.getElementById('totalSubmissions').textContent = submissions.length;
+            document.getElementById('starterCount').textContent = submissions.filter(s => s.plan === 'starter').length;
+            document.getElementById('proCount').textContent = submissions.filter(s => s.plan === 'pro').length;
+            document.getElementById('eliteCount').textContent = submissions.filter(s => s.plan === 'elite').length;
+        }
+
+        // Render submissions
+        function renderSubmissions() {
+            const container = document.getElementById('submissionsList');
+
+            // Filter submissions
+            const filtered = currentFilter === 'all'
+                ? submissions
+                : submissions.filter(s => s.plan === currentFilter);
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No ${currentFilter === 'all' ? '' : currentFilter} submissions yet</h3>
+                        <p>Client onboarding submissions will appear here</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(s => `
+                <div class="submission-card ${s.plan}" data-plan="${s.plan}">
+                    <div class="submission-header">
+                        <div class="submission-title">
+                            <h3>${s.businessName || 'Unnamed Business'}</h3>
+                            <div class="industry">${formatIndustry(s.industry)} | ${s.clientId || 'No ID'}</div>
+                        </div>
+                        <span class="plan-badge ${s.plan}">${s.plan}</span>
+                    </div>
+
+                    <div class="submission-meta">
+                        <div class="meta-item">
+                            <strong>Email:</strong>
+                            <span>${s.email || 'N/A'}</span>
+                        </div>
+                        <div class="meta-item">
+                            <strong>Phone:</strong>
+                            <span>${s.phone || 'N/A'}</span>
+                        </div>
+                        <div class="meta-item">
+                            <strong>Website:</strong>
+                            <span>${s.website || 'N/A'}</span>
+                        </div>
+                        <div class="meta-item">
+                            <strong>Submitted:</strong>
+                            <span>${formatDate(s.timestamp)}</span>
+                        </div>
+                    </div>
+
+                    <div class="submission-actions">
+                        <button class="btn btn-primary" onclick="downloadConfig('${s.id}')">
+                            Download Build Config
+                        </button>
+                        <button class="btn btn-secondary" onclick="toggleDetails('${s.id}')">
+                            View Details
+                        </button>
+                        <button class="btn btn-secondary" onclick="copyEmail('${s.email}')">
+                            Copy Email
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteSubmission('${s.id}')">
+                            Delete
+                        </button>
+                    </div>
+
+                    <div class="submission-details" id="details-${s.id}">
+                        ${renderDetails(s)}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render full details
+        function renderDetails(s) {
+            return `
+                <div class="details-grid">
+                    <div class="detail-section">
+                        <h4>Business Information</h4>
+                        <ul>
+                            <li><strong>Name:</strong> ${s.businessName || 'N/A'}</li>
+                            <li><strong>Industry:</strong> ${formatIndustry(s.industry)}</li>
+                            <li><strong>Description:</strong> ${s.businessDescription || 'N/A'}</li>
+                            <li><strong>Phone:</strong> ${s.phone || 'N/A'}</li>
+                            <li><strong>Email:</strong> ${s.email || 'N/A'}</li>
+                            <li><strong>Website:</strong> ${s.website || 'N/A'}</li>
+                        </ul>
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Location & Hours</h4>
+                        <ul>
+                            <li><strong>Service Area:</strong> ${s.serviceArea || 'N/A'}</li>
+                            <li><strong>Timezone:</strong> ${s.timezone || 'N/A'}</li>
+                            <li><strong>Hours:</strong> ${s.businessHours || 'N/A'}</li>
+                            <li><strong>Emergency:</strong> ${s.emergencyAvailable === 'yes' ? 'Yes, 24/7' : s.emergencyAvailable === 'limited' ? 'Limited' : 'No'}</li>
+                        </ul>
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Branding</h4>
+                        <ul>
+                            <li><strong>Color:</strong> <span style="display:inline-block;width:16px;height:16px;background:${s.brandColor || '#3AB573'};border-radius:3px;vertical-align:middle;margin-right:6px;"></span>${s.brandColor || '#3AB573'}</li>
+                            <li><strong>Chatbot Name:</strong> ${s.chatbotName || 'OTTO (default)'}</li>
+                            <li><strong>Logo:</strong> ${s.logoFilename || 'Not uploaded'}</li>
+                        </ul>
+                        ${s.logoData ? `<div style="margin-top:12px;"><img src="${s.logoData}" alt="Client Logo" style="max-width:150px;max-height:100px;border-radius:8px;border:2px solid var(--color-border);"></div>` : ''}
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Services</h4>
+                        <ul>
+                            <li><strong>Services:</strong><br>${(s.services || 'N/A').replace(/\n/g, '<br>')}</li>
+                            <li><strong>Pricing Info:</strong> ${s.pricingInfo || 'Not provided'}</li>
+                        </ul>
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Welcome Message</h4>
+                        <p style="color: var(--color-text-secondary); font-size: 14px; line-height: 1.5;">${s.welcomeMessage || 'Not set'}</p>
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>FAQs (${s.faqCount || (s.faqs ? s.faqs.length : 0)})</h4>
+                        ${s.faqs && s.faqs.length > 0 ? s.faqs.slice(0, 5).map(faq => `
+                            <div class="faq-item">
+                                <strong>Q: ${faq.question}</strong>
+                                <span>A: ${faq.answer}</span>
+                            </div>
+                        `).join('') + (s.faqs.length > 5 ? `<p style="color:var(--color-text-secondary);font-size:13px;">...and ${s.faqs.length - 5} more FAQs</p>` : '') : '<p style="color:var(--color-text-secondary);">No FAQs provided</p>'}
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Lead Capture Settings</h4>
+                        <ul>
+                            <li><strong>Collect:</strong> Name, Phone, Email, Service (always)</li>
+                            ${s.collectFields && s.collectFields.length > 0 ? `<li><strong>Also Collect:</strong> ${s.collectFields.join(', ')}</li>` : ''}
+                        </ul>
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Booking & Notifications</h4>
+                        <ul>
+                            <li><strong>Booking:</strong> ${s.bookingEnabled ? 'Enabled' : 'Disabled'}</li>
+                            ${s.appointmentTypes ? `<li><strong>Appointment Types:</strong> ${s.appointmentTypes}</li>` : ''}
+                            ${s.appointmentDuration ? `<li><strong>Duration:</strong> ${s.appointmentDuration} mins</li>` : ''}
+                            <li><strong>Notify Email:</strong> ${s.notificationEmail || 'N/A'}</li>
+                            <li><strong>Notify SMS:</strong> ${s.notificationSms || 'Not set'}</li>
+                        </ul>
+                    </div>
+
+                    ${s.plan !== 'starter' ? `
+                    <div class="detail-section">
+                        <h4>Integrations</h4>
+                        <ul>
+                            <li><strong>Calendar:</strong> ${formatProvider(s.calendarProvider)}</li>
+                            ${s.calendarLink ? `<li><strong>Calendar Link:</strong> ${s.calendarLink}</li>` : ''}
+                            <li><strong>CRM:</strong> ${formatProvider(s.crmProvider)}</li>
+                        </ul>
+                        ${s.qualifyFields && s.qualifyFields.length > 0 ? `
+                        <p style="margin-top:8px;font-size:13px;color:var(--color-text-secondary);"><strong>Qualify On:</strong> ${s.qualifyFields.join(', ')}</p>
+                        ` : ''}
+                    </div>
+                    ` : ''}
+
+                    ${s.plan === 'elite' && s.eliteFeatures && s.eliteFeatures.length > 0 ? `
+                    <div class="detail-section">
+                        <h4>Elite Features</h4>
+                        <div class="feature-tags">
+                            ${s.eliteFeatures.map(f => `<span class="feature-tag">${formatFeature(f)}</span>`).join('')}
+                        </div>
+                        ${s.departments ? `<p style="margin-top:8px;font-size:13px;color:var(--color-text-secondary);"><strong>Departments:</strong> ${s.departments}</p>` : ''}
+                    </div>
+                    ` : ''}
+
+                    ${s.specialRequests ? `
+                    <div class="detail-section">
+                        <h4>Special Requests</h4>
+                        <p style="color: var(--color-text-secondary); font-size: 14px; line-height: 1.5;">${s.specialRequests}</p>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        // Helper functions
+        function formatIndustry(industry) {
+            if (!industry) return 'N/A';
+            return industry.split('-').map(word =>
+                word.charAt(0).toUpperCase() + word.slice(1)
+            ).join(' ');
+        }
+
+        function formatDate(timestamp) {
+            if (!timestamp) return 'Unknown';
+            return new Date(timestamp).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function formatProvider(provider) {
+            if (!provider || provider === 'none' || provider === '') return 'None';
+            const names = {
+                'google': 'Google Calendar',
+                'outlook': 'Outlook',
+                'calendly': 'Calendly',
+                'cal.com': 'Cal.com',
+                'acuity': 'Acuity',
+                'hubspot': 'HubSpot',
+                'salesforce': 'Salesforce',
+                'pipedrive': 'Pipedrive',
+                'zoho': 'Zoho CRM',
+                'gohighlevel': 'GoHighLevel',
+                'monday': 'Monday.com',
+                'other': 'Other (via Zapier/Make)'
+            };
+            return names[provider] || provider;
+        }
+
+        function formatFeature(feature) {
+            const names = {
+                'email_sequences': 'Email Sequences',
+                'sms_followup': 'SMS Follow-ups',
+                'dept_routing': 'Dept Routing',
+                'human_handoff': 'Human Handoff',
+                'support_flows': 'Support Flows',
+                'sales_automation': 'Sales Automation'
+            };
+            return names[feature] || feature;
+        }
+
+        // Toggle details
+        function toggleDetails(id) {
+            const details = document.getElementById(`details-${id}`);
+            details.classList.toggle('active');
+        }
+
+        // Download config for building
+        function downloadConfig(id) {
+            const submission = submissions.find(s => s.id === id);
+            if (!submission) return;
+
+            // Create a comprehensive config for Claude to build from
+            const buildConfig = {
+                clientId: submission.clientId,
+                plan: submission.plan,
+                submittedAt: submission.timestamp,
+
+                business: {
+                    name: submission.businessName,
+                    description: submission.businessDescription,
+                    industry: submission.industry,
+                    phone: submission.phone,
+                    email: submission.email,
+                    website: submission.website
+                },
+
+                location: {
+                    serviceArea: submission.serviceArea,
+                    timezone: submission.timezone,
+                    hours: submission.businessHours,
+                    emergencyAvailable: submission.emergencyAvailable
+                },
+
+                branding: {
+                    color: submission.brandColor,
+                    chatbotName: submission.chatbotName || 'OTTO',
+                    welcomeMessage: submission.welcomeMessage,
+                    logoFilename: submission.logoFilename,
+                    logoData: submission.logoData || null
+                },
+
+                services: {
+                    list: submission.services,
+                    pricing: submission.pricingInfo
+                },
+
+                faqs: submission.faqs || [],
+
+                leadCapture: {
+                    requiredFields: ['name', 'phone', 'email', 'service'],
+                    optionalFields: submission.collectFields || []
+                },
+
+                booking: {
+                    enabled: submission.bookingEnabled,
+                    appointmentTypes: submission.appointmentTypes,
+                    duration: submission.appointmentDuration
+                },
+
+                notifications: {
+                    email: submission.notificationEmail,
+                    sms: submission.notificationSms
+                },
+
+                integrations: {
+                    calendar: {
+                        provider: submission.calendarProvider,
+                        link: submission.calendarLink
+                    },
+                    crm: submission.crmProvider
+                },
+
+                qualification: submission.qualifyFields || [],
+
+                eliteFeatures: submission.eliteFeatures || [],
+
+                departments: submission.departments,
+                departmentEmails: submission.deptEmails,
+
+                specialRequests: submission.specialRequests
+            };
+
+            const dataStr = JSON.stringify(buildConfig, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `${submission.clientId || submission.businessName || 'client'}-build-config.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Copy email to clipboard
+        function copyEmail(email) {
+            if (!email) return;
+            navigator.clipboard.writeText(email);
+            alert('Email copied to clipboard!');
+        }
+
+        // Export all submissions
+        function exportAllSubmissions() {
+            if (submissions.length === 0) {
+                alert('No submissions to export');
+                return;
+            }
+
+            const dataStr = JSON.stringify(submissions, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `all-submissions-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Delete submission
+        function deleteSubmission(id) {
+            if (!confirm('Are you sure you want to delete this submission?')) return;
+            localStorage.removeItem(id);
+            loadSubmissions();
+        }
+
+        // Refresh submissions
+        function refreshSubmissions() {
+            loadSubmissions();
+        }
+
+        // Filter handling
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentFilter = this.dataset.filter;
+                renderSubmissions();
+            });
+        });
+
+        // Initialize
+        loadSubmissions();
+
+        // Auto-refresh every 30 seconds
+        setInterval(loadSubmissions, 30000);
+    </script>
+</body>
+</html>

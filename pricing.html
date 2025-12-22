@@ -4,26 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pricing - OTTO Automation</title>
-    <meta name="description" content="Choose the perfect OTTO plan for your business. Transparent pricing with no hidden fees. 30-day money-back guarantee.">
+    <meta name="description" content="Choose the perfect OTTO plan for your business. Transparent pricing with no hidden fees. Cancel monthly anytime.">
     <link rel="stylesheet" href="styles.css">
     <style>
-        .pricing-hero {
-            padding: 120px 0 var(--spacing-3xl);
-            text-align: center;
-            background: linear-gradient(135deg, var(--color-bg) 0%, #0d1a13 100%);
-        }
-
-        .pricing-hero h1 {
-            margin-bottom: var(--spacing-md);
-        }
-
-        .pricing-hero p {
-            font-size: 18px;
-            color: var(--color-text-secondary);
-            max-width: 600px;
-            margin: 0 auto var(--spacing-lg);
-        }
-
         .pricing-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -144,7 +127,7 @@
             border-radius: var(--radius-lg);
             border: 2px solid var(--color-primary);
             text-align: center;
-            margin-bottom: var(--spacing-3xl);
+            margin-bottom: var(--spacing-sm);
         }
 
         .guarantee-banner h3 {
@@ -163,6 +146,85 @@
 
         .pricing-faq {
             padding: var(--spacing-3xl) 0;
+        }
+
+        /* Billing Toggle */
+        .billing-toggle-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .billing-toggle {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            background-color: var(--color-bg-card);
+            padding: 8px;
+            border-radius: 50px;
+            border: 2px solid var(--color-border);
+        }
+
+        .billing-option {
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--color-text-secondary);
+            background: transparent;
+            border: none;
+        }
+
+        .billing-option.active {
+            background-color: var(--color-primary);
+            color: var(--color-bg);
+        }
+
+        .billing-option:hover:not(.active) {
+            color: var(--color-text);
+        }
+
+        .save-badge {
+            background: linear-gradient(135deg, var(--color-primary) 0%, #2d9c5f 100%);
+            color: var(--color-bg);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-top: var(--spacing-sm);
+            display: none;
+        }
+
+        .save-badge.visible {
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .price-annual {
+            display: none;
+        }
+
+        .billing-annual .price-monthly {
+            display: none;
+        }
+
+        .billing-annual .price-annual {
+            display: block;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: var(--color-text-secondary);
+            font-size: 24px;
+            margin-right: 8px;
         }
     </style>
 </head>
@@ -193,19 +255,31 @@
         </div>
     </nav>
 
-    <!-- Pricing Hero -->
-    <section class="pricing-hero">
+    <!-- Hero -->
+    <section class="hero" style="min-height: auto; padding: 160px 0 80px;">
         <div class="container">
-            <h1>Choose The Perfect Plan For Your Business</h1>
-            <p>Transparent pricing with no hidden fees. Cancel anytime with 30 days notice.</p>
-            <p style="color: var(--color-primary); font-weight: 600;">Not sure which plan is right? <a href="contact.html" style="text-decoration: underline;">Talk to an expert</a></p>
+            <div class="hero-content" style="grid-template-columns: 1fr; text-align: center;">
+                <div class="hero-text">
+                    <h1 class="hero-title">Choose The Perfect Plan For Your Business</h1>
+                    <p class="hero-subtitle">Transparent pricing with no hidden fees. Cancel anytime with 30 days notice.</p>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Pricing Cards -->
     <section style="padding: var(--spacing-3xl) 0; background-color: var(--color-bg);">
         <div class="container">
-            <div class="pricing-grid">
+            <!-- Billing Toggle -->
+            <div class="billing-toggle-wrapper">
+                <div class="billing-toggle">
+                    <button class="billing-option active" data-billing="monthly">Monthly</button>
+                    <button class="billing-option" data-billing="annual">Annual</button>
+                </div>
+                <span class="save-badge">SAVE 20% WITH ANNUAL</span>
+            </div>
+
+            <div class="pricing-grid" id="pricingGrid">
                 <!-- Starter -->
                 <div class="pricing-card">
                     <div class="pricing-header">
@@ -213,7 +287,13 @@
                         <p class="pricing-description">Perfect for small businesses who need basic automation without complexity</p>
                         <div class="pricing-price">
                             <div class="setup-fee">$399 Setup</div>
-                            <div class="monthly-price">$149<span>/mo</span></div>
+                            <div class="price-monthly">
+                                <div class="monthly-price">$149<span>/mo</span></div>
+                            </div>
+                            <div class="price-annual">
+                                <div class="monthly-price"><span class="original-price">$149</span>$119<span>/mo</span></div>
+                                <div style="font-size: 13px; color: var(--color-primary); margin-top: 5px;">Billed annually ($1,428/yr)</div>
+                            </div>
                         </div>
                     </div>
                     <ul class="pricing-features">
@@ -226,7 +306,7 @@
                         <li>1 monthly update to questions, info, or scripts</li>
                         <li>Email support (1 business day response)</li>
                     </ul>
-                    <a href="#" class="btn-primary pricing-cta">GET STARTED</a>
+                    <a href="https://buy.stripe.com/00wfZicYL8c9d063IPebu0g" class="btn-primary pricing-cta" data-monthly="https://buy.stripe.com/00wfZicYL8c9d063IPebu0g" data-annual="https://buy.stripe.com/cNi7sM8IvfEB8JQ6V1ebu0m">GET STARTED</a>
                 </div>
 
                 <!-- Pro (Most Popular) -->
@@ -236,7 +316,13 @@
                         <p class="pricing-description">Ideal for growing businesses that need smarter automation with real integrations</p>
                         <div class="pricing-price">
                             <div class="setup-fee">$899 Setup</div>
-                            <div class="monthly-price">$349<span>/mo</span></div>
+                            <div class="price-monthly">
+                                <div class="monthly-price">$349<span>/mo</span></div>
+                            </div>
+                            <div class="price-annual">
+                                <div class="monthly-price"><span class="original-price">$349</span>$279<span>/mo</span></div>
+                                <div style="font-size: 13px; color: var(--color-primary); margin-top: 5px;">Billed annually ($3,348/yr)</div>
+                            </div>
                         </div>
                     </div>
                     <ul class="pricing-features">
@@ -252,7 +338,7 @@
                         <li>3 monthly updates to workflows and content</li>
                         <li>Priority support (4-hour response time)</li>
                     </ul>
-                    <a href="#" class="btn-primary pricing-cta">GET STARTED</a>
+                    <a href="https://buy.stripe.com/7sYfZif6T6412ls939ebu0h" class="btn-primary pricing-cta" data-monthly="https://buy.stripe.com/7sYfZif6T6412ls939ebu0h" data-annual="https://buy.stripe.com/9B6cN67Erakhgci939ebu0n">GET STARTED</a>
                 </div>
 
                 <!-- Elite -->
@@ -262,7 +348,13 @@
                         <p class="pricing-description">Full automation suite for businesses that want OTTO to operate like a 24/7 employee</p>
                         <div class="pricing-price">
                             <div class="setup-fee">$2,499 Setup</div>
-                            <div class="monthly-price">$699<span>/mo</span></div>
+                            <div class="price-monthly">
+                                <div class="monthly-price">$699<span>/mo</span></div>
+                            </div>
+                            <div class="price-annual">
+                                <div class="monthly-price"><span class="original-price">$699</span>$559<span>/mo</span></div>
+                                <div style="font-size: 13px; color: var(--color-primary); margin-top: 5px;">Billed annually ($6,708/yr)</div>
+                            </div>
                         </div>
                     </div>
                     <ul class="pricing-features">
@@ -276,16 +368,16 @@
                         <li>Transfers complex questions to your human team when needed</li>
                         <li>25 conversation workflows (covers every customer scenario)</li>
                         <li>8 monthly updates for continuous optimization</li>
-                        <li>VIP support (2-hour response) + monthly strategy call</li>
+                        <li>VIP support (2-hour response)</li>
                     </ul>
-                    <a href="#" class="btn-primary pricing-cta">GET STARTED</a>
+                    <a href="https://buy.stripe.com/9B66oI7Erbolf8e939ebu0i" class="btn-primary pricing-cta" data-monthly="https://buy.stripe.com/9B66oI7Erbolf8e939ebu0i" data-annual="https://buy.stripe.com/3cIfZi5wj4ZX3pw2ELebu0o">GET STARTED</a>
                 </div>
             </div>
 
-            <!-- Guarantee Banner -->
+            <!-- Policy Banner -->
             <div class="guarantee-banner">
-                <h3>🛡️ 30-Day Money-Back Guarantee</h3>
-                <p>If OTTO doesn't capture more leads in your first month, we'll refund everything. No questions asked.</p>
+                <h3>🛡️ Our Commitment To You</h3>
+                <p>Setup fees cover the custom build of your AI assistant. Monthly subscriptions can be cancelled anytime with 30 days notice. If we can't integrate with your required systems, we'll work with you to find a solution or provide a refund.</p>
             </div>
         </div>
     </section>
@@ -408,15 +500,15 @@
                 </div>
                 <div class="faq-item">
                     <h3>Can I cancel?</h3>
-                    <p>Yes. Month-to-month plans with 30 days notice. We'll even help you export your data.</p>
+                    <p>Yes. Monthly subscriptions can be cancelled anytime with 30 days notice. Setup fees are non-refundable as they cover the custom build of your bot.</p>
                 </div>
                 <div class="faq-item">
                     <h3>Do you offer annual plans?</h3>
-                    <p>Yes! Save 15% with annual billing. Contact us for details.</p>
+                    <p>Yes! Save 20% with annual billing. Use the toggle at the top of the pricing section to see annual rates.</p>
                 </div>
                 <div class="faq-item">
                     <h3>Do you offer discounts?</h3>
-                    <p>20% off for nonprofits and educational institutions. Ask about startup discounts!</p>
+                    <p>We run promo codes from time to time! Follow us or contact us to ask about current offers.</p>
                 </div>
             </div>
         </div>
@@ -427,7 +519,7 @@
         <div class="container">
             <div class="cta-content">
                 <h2>Ready to Get Started?</h2>
-                <p>Choose your plan above or book a demo to see OTTO in action first</p>
+                <p>Choose your plan above or try our simple demo to see OTTO in action first</p>
                 <div class="cta-buttons">
                     <a href="try-demo.html" class="btn-primary btn-large">Try It Free</a>
                     <a href="contact.html" class="btn-secondary btn-large">Contact Sales</a>
@@ -489,5 +581,38 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+        // Billing Toggle Functionality
+        const billingOptions = document.querySelectorAll('.billing-option');
+        const pricingGrid = document.getElementById('pricingGrid');
+        const saveBadge = document.querySelector('.save-badge');
+        const pricingCtas = document.querySelectorAll('.pricing-cta');
+
+        billingOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Update active button
+                billingOptions.forEach(btn => btn.classList.remove('active'));
+                option.classList.add('active');
+
+                const billing = option.dataset.billing;
+
+                // Toggle annual class on pricing grid
+                if (billing === 'annual') {
+                    pricingGrid.classList.add('billing-annual');
+                    saveBadge.classList.add('visible');
+                } else {
+                    pricingGrid.classList.remove('billing-annual');
+                    saveBadge.classList.remove('visible');
+                }
+
+                // Update CTA links
+                pricingCtas.forEach(cta => {
+                    const link = billing === 'annual' ? cta.dataset.annual : cta.dataset.monthly;
+                    cta.href = link;
+                });
+            });
+        });
+    </script>
+    <script src="otto-chat-widget.js"></script>
 </body>
 </html>
