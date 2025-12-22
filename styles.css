@@ -992,6 +992,33 @@ tr:last-child td {
 
     .nav-links {
         display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.98);
+        flex-direction: column;
+        padding: var(--spacing-lg);
+        gap: 0;
+        border-top: 1px solid var(--color-border);
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links a {
+        padding: var(--spacing-md) 0;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .nav-links a:last-child {
+        border-bottom: none;
+        margin-top: var(--spacing-md);
+    }
+
+    .nav-wrapper {
+        position: relative;
     }
 
     .mobile-menu-btn {
@@ -1011,11 +1038,16 @@ tr:last-child td {
         flex-direction: column;
         text-align: center;
     }
+
+    .chat-demo {
+        max-width: 100%;
+    }
 }
 
 @media (max-width: 640px) {
     .stats-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-md);
     }
 
     .steps-grid {
@@ -1032,6 +1064,55 @@ tr:last-child td {
 
     .faq-grid {
         grid-template-columns: 1fr;
+    }
+
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-lg);
+    }
+
+    .hero-title {
+        font-size: 32px;
+    }
+
+    .hero-subtitle {
+        font-size: 16px;
+    }
+
+    .section-title {
+        font-size: 28px;
+    }
+
+    .container {
+        padding: 0 var(--spacing-md);
+    }
+
+    .comparison-table {
+        overflow-x: auto;
+    }
+
+    .comparison-table table {
+        min-width: 500px;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .hero-title {
+        font-size: 28px;
+    }
+
+    .btn-large {
+        padding: 14px 28px;
+        font-size: 15px;
     }
 }
 
