@@ -36,6 +36,11 @@
     box-sizing: border-box;
 }
 
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+}
+
 html {
     scroll-behavior: smooth;
 }
@@ -1041,6 +1046,21 @@ tr:last-child td {
 
     .chat-demo {
         max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .hero-visual {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .section-title {
+        padding: 0 var(--spacing-sm);
+    }
+
+    .section-subtitle {
+        padding: 0 var(--spacing-sm);
     }
 }
 
@@ -1113,6 +1133,61 @@ tr:last-child td {
     .btn-large {
         padding: 14px 28px;
         font-size: 15px;
+    }
+
+    .hero-text {
+        text-align: center;
+    }
+
+    .hero-buttons {
+        align-items: center;
+    }
+
+    .solution-content {
+        text-align: center;
+    }
+
+    .solution-list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .solution-item {
+        justify-content: center;
+    }
+
+    .problem-list {
+        align-items: center;
+    }
+
+    .problem-item {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .step-card {
+        text-align: center;
+    }
+
+    .feature-card {
+        text-align: center;
+    }
+
+    .testimonial-card {
+        text-align: center;
+    }
+
+    .faq-item {
+        text-align: left;
+    }
+
+    table {
+        font-size: 13px;
+    }
+
+    th, td {
+        padding: 10px 8px;
     }
 }
 
