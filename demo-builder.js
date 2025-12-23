@@ -448,26 +448,38 @@ function setupDemoChat() {
             let response = '';
             const lowerMsg = message.toLowerCase();
 
-            // Try to match FAQ
-            const faqMatch = demoConfig.faqs.find(faq => {
-                const keywords = faq.question.toLowerCase().replace(/[?,.!]/g, '').split(' ').filter(w => w.length > 3);
-                return keywords.some(kw => lowerMsg.includes(kw));
-            });
-
-            if (faqMatch) {
-                response = faqMatch.answer;
-            } else if (lowerMsg.match(/\b(book|appointment|schedule)\b/)) {
+            // Check for hours question FIRST (use their actual business hours)
+            if (lowerMsg.match(/\b(hour|hours|open|close|when)\b/)) {
+                response = demoConfig.businessHours ? `Our hours are ${demoConfig.businessHours}. Is there anything else I can help with?` : "We're open during regular business hours. Feel free to contact us for specifics!";
+            }
+            // Booking/appointment
+            else if (lowerMsg.match(/\b(book|appointment|schedule)\b/)) {
                 response = "I'd be happy to help you schedule! What day works best for you?";
-            } else if (lowerMsg.match(/\b(hour|open|close|when)\b/)) {
-                response = demoConfig.businessHours ? `Our hours are ${demoConfig.businessHours}.` : "We're open during regular business hours!";
-            } else if (lowerMsg.match(/\b(price|cost|much)\b/)) {
+            }
+            // Pricing
+            else if (lowerMsg.match(/\b(price|cost|much|rate|fee|charge)\b/)) {
                 response = "Pricing depends on your needs. Want me to help you get a quote?";
-            } else if (lowerMsg.match(/\b(thank|thanks)\b/)) {
+            }
+            // Thanks
+            else if (lowerMsg.match(/\b(thank|thanks)\b/)) {
                 response = "You're welcome! Anything else I can help with?";
-            } else if (lowerMsg.match(/^(hi|hello|hey)/i)) {
+            }
+            // Greeting
+            else if (lowerMsg.match(/^(hi|hello|hey)/i)) {
                 response = "Hello! How can I help you today?";
-            } else {
-                response = "Great question! Our team can give you more details on that. Is there anything else I can help with?";
+            }
+            // Try to match FAQ for other questions
+            else {
+                const faqMatch = demoConfig.faqs.find(faq => {
+                    const keywords = faq.question.toLowerCase().replace(/[?,.!]/g, '').split(' ').filter(w => w.length > 3);
+                    return keywords.some(kw => lowerMsg.includes(kw));
+                });
+
+                if (faqMatch) {
+                    response = faqMatch.answer;
+                } else {
+                    response = "Great question! Our team can give you more details on that. Is there anything else I can help with?";
+                }
             }
 
             const botMsg = document.createElement('div');
