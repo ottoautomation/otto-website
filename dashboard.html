@@ -470,13 +470,250 @@
     </footer>
 
     <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        const API_URL = 'https://otto-api-clean.vercel.app';
+        let currentUser = null;
+        let dashboardData = null;
+
         // Login form handler
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const email = document.getElementById('email').value;
-            // For now, show a message - replace with actual authentication later
-            alert('Dashboard access coming soon! For existing clients, please contact support at ottoai.official@gmail.com to access your analytics.');
+            const password = document.getElementById('password').value;
+            const button = this.querySelector('button');
+            const originalText = button.textContent;
+
+            button.textContent = 'Signing in...';
+            button.disabled = true;
+
+            try {
+                const response = await fetch(`${API_URL}?action=login&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    currentUser = data.user;
+                    // Store session
+                    sessionStorage.setItem('ottoUser', JSON.stringify(currentUser));
+                    // Show dashboard
+                    showClientDashboard();
+                } else {
+                    showLoginError(data.error || 'Invalid email or password');
+                    button.textContent = originalText;
+                    button.disabled = false;
+                }
+            } catch (error) {
+                showLoginError('Connection error. Please try again.');
+                console.error('Login error:', error);
+                button.textContent = originalText;
+                button.disabled = false;
+            }
+        });
+
+        function showLoginError(message) {
+            // Remove any existing error
+            const existingError = document.querySelector('.login-error');
+            if (existingError) existingError.remove();
+
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'login-error';
+            errorDiv.style.cssText = 'background: #ff4444; color: white; padding: 12px; border-radius: 8px; margin-bottom: 16px; text-align: center;';
+            errorDiv.textContent = message;
+
+            const form = document.getElementById('loginForm');
+            form.insertBefore(errorDiv, form.firstChild);
+        }
+
+        async function showClientDashboard() {
+            // Hide login section and info content
+            document.querySelector('.login-section').style.display = 'none';
+            document.querySelector('.dashboard-preview').style.display = 'none';
+            document.querySelector('.feature-grid').style.display = 'none';
+            document.querySelector('.dashboard-content').style.display = 'none';
+            document.querySelector('.cta-section').style.display = 'none';
+
+            // Create and show actual dashboard
+            const container = document.querySelector('section[style*="padding"] .container');
+
+            const dashboardHTML = `
+                <div id="clientDashboard" style="background: var(--color-bg-card); border: 2px solid var(--color-primary); border-radius: var(--radius-lg); padding: var(--spacing-xl); margin-bottom: var(--spacing-xl);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-xl); padding-bottom: var(--spacing-md); border-bottom: 1px solid var(--color-border);">
+                        <div>
+                            <h2 style="color: var(--color-primary); margin: 0;">Welcome, <span id="dashUserName">${currentUser.name}</span></h2>
+                            <p style="color: var(--color-text-secondary); margin-top: 4px;">${currentUser.company || 'Your Dashboard'}</p>
+                        </div>
+                        <button onclick="logout()" style="padding: 10px 20px; background: transparent; color: var(--color-primary); border: 2px solid var(--color-primary); border-radius: var(--radius-md); cursor: pointer; font-weight: 600;">Logout</button>
+                    </div>
+
+                    <div id="dashboardLoading" style="text-align: center; padding: 40px; color: var(--color-text-secondary);">
+                        Loading your dashboard...
+                    </div>
+
+                    <div id="dashboardContent" style="display: none;">
+                        <!-- Metrics Grid -->
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-md); margin-bottom: var(--spacing-xl);">
+                            <div style="background: rgba(58, 181, 115, 0.1); border: 1px solid var(--color-primary); border-radius: var(--radius-md); padding: var(--spacing-lg); text-align: center;">
+                                <div id="metricLeads" style="font-size: 32px; font-weight: 700; color: var(--color-primary);">0</div>
+                                <div style="font-size: 12px; color: var(--color-text-secondary); text-transform: uppercase;">Total Leads</div>
+                            </div>
+                            <div style="background: rgba(58, 181, 115, 0.1); border: 1px solid var(--color-primary); border-radius: var(--radius-md); padding: var(--spacing-lg); text-align: center;">
+                                <div id="metricBookings" style="font-size: 32px; font-weight: 700; color: var(--color-primary);">0</div>
+                                <div style="font-size: 12px; color: var(--color-text-secondary); text-transform: uppercase;">Bookings</div>
+                            </div>
+                            <div style="background: rgba(58, 181, 115, 0.1); border: 1px solid var(--color-primary); border-radius: var(--radius-md); padding: var(--spacing-lg); text-align: center;">
+                                <div id="metricConversion" style="font-size: 32px; font-weight: 700; color: var(--color-primary);">0%</div>
+                                <div style="font-size: 12px; color: var(--color-text-secondary); text-transform: uppercase;">Conversion Rate</div>
+                            </div>
+                            <div style="background: rgba(58, 181, 115, 0.1); border: 1px solid var(--color-primary); border-radius: var(--radius-md); padding: var(--spacing-lg); text-align: center;">
+                                <div id="metricRevenue" style="font-size: 32px; font-weight: 700; color: var(--color-primary);">$0</div>
+                                <div style="font-size: 12px; color: var(--color-text-secondary); text-transform: uppercase;">Revenue</div>
+                            </div>
+                        </div>
+
+                        <!-- Tabs -->
+                        <div style="display: flex; gap: 8px; margin-bottom: var(--spacing-lg); border-bottom: 2px solid var(--color-border); padding-bottom: 0;">
+                            <button class="dash-tab active" onclick="showDashTab('leads')" style="padding: 12px 24px; background: transparent; border: none; border-bottom: 3px solid var(--color-primary); color: var(--color-primary); cursor: pointer; font-weight: 600;">Leads</button>
+                            <button class="dash-tab" onclick="showDashTab('bookings')" style="padding: 12px 24px; background: transparent; border: none; border-bottom: 3px solid transparent; color: var(--color-text-secondary); cursor: pointer; font-weight: 600;">Bookings</button>
+                        </div>
+
+                        <!-- Leads Tab -->
+                        <div id="leadsTabContent" class="dash-tab-content">
+                            <div style="overflow-x: auto;">
+                                <table style="width: 100%; border-collapse: collapse;">
+                                    <thead>
+                                        <tr style="background: var(--color-bg);">
+                                            <th style="padding: 12px; text-align: left; color: var(--color-primary); border-bottom: 2px solid var(--color-primary); font-size: 12px; text-transform: uppercase;">Name</th>
+                                            <th style="padding: 12px; text-align: left; color: var(--color-primary); border-bottom: 2px solid var(--color-primary); font-size: 12px; text-transform: uppercase;">Email</th>
+                                            <th style="padding: 12px; text-align: left; color: var(--color-primary); border-bottom: 2px solid var(--color-primary); font-size: 12px; text-transform: uppercase;">Phone</th>
+                                            <th style="padding: 12px; text-align: left; color: var(--color-primary); border-bottom: 2px solid var(--color-primary); font-size: 12px; text-transform: uppercase;">Status</th>
+                                            <th style="padding: 12px; text-align: left; color: var(--color-primary); border-bottom: 2px solid var(--color-primary); font-size: 12px; text-transform: uppercase;">Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="leadsTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Bookings Tab -->
+                        <div id="bookingsTabContent" class="dash-tab-content" style="display: none;">
+                            <div id="bookingsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--spacing-md);"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            container.insertAdjacentHTML('afterbegin', dashboardHTML);
+
+            // Load dashboard data
+            await loadDashboardData();
+        }
+
+        async function loadDashboardData() {
+            try {
+                const response = await fetch(`${API_URL}?action=getDashboard&clientId=${encodeURIComponent(currentUser.clientId)}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    dashboardData = data;
+                    document.getElementById('dashboardLoading').style.display = 'none';
+                    document.getElementById('dashboardContent').style.display = 'block';
+                    updateDashboardMetrics();
+                } else {
+                    document.getElementById('dashboardLoading').textContent = 'Failed to load data. Please refresh.';
+                }
+            } catch (error) {
+                document.getElementById('dashboardLoading').textContent = 'Connection error. Please refresh.';
+                console.error('Dashboard load error:', error);
+            }
+        }
+
+        function updateDashboardMetrics() {
+            const { leads, bookings } = dashboardData;
+
+            // Update metrics
+            document.getElementById('metricLeads').textContent = leads.length;
+            document.getElementById('metricBookings').textContent = bookings.length;
+
+            const conversionRate = leads.length > 0 ? ((bookings.length / leads.length) * 100).toFixed(1) : 0;
+            document.getElementById('metricConversion').textContent = conversionRate + '%';
+
+            const totalRevenue = bookings.reduce((sum, b) => sum + (b.value || 0), 0);
+            document.getElementById('metricRevenue').textContent = '$' + totalRevenue.toLocaleString();
+
+            // Update leads table
+            const tbody = document.getElementById('leadsTableBody');
+            if (leads.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="padding: 40px; text-align: center; color: var(--color-text-secondary);">No leads yet</td></tr>';
+            } else {
+                tbody.innerHTML = leads.map(lead => `
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid var(--color-border); color: var(--color-text);">${lead.name}</td>
+                        <td style="padding: 12px; border-bottom: 1px solid var(--color-border); color: var(--color-text-secondary);">${lead.email}</td>
+                        <td style="padding: 12px; border-bottom: 1px solid var(--color-border); color: var(--color-text-secondary);">${lead.phone || '-'}</td>
+                        <td style="padding: 12px; border-bottom: 1px solid var(--color-border);"><span style="display: inline-block; padding: 4px 12px; background: var(--color-primary); color: #000; border-radius: 12px; font-size: 12px; font-weight: 600;">${lead.status}</span></td>
+                        <td style="padding: 12px; border-bottom: 1px solid var(--color-border); color: var(--color-text-secondary);">${formatDate(lead.capturedDate)}</td>
+                    </tr>
+                `).join('');
+            }
+
+            // Update bookings grid
+            const bookingsGrid = document.getElementById('bookingsGrid');
+            if (bookings.length === 0) {
+                bookingsGrid.innerHTML = '<div style="padding: 40px; text-align: center; color: var(--color-text-secondary); grid-column: 1/-1;">No bookings yet</div>';
+            } else {
+                bookingsGrid.innerHTML = bookings.map(booking => `
+                    <div style="background: var(--color-bg); border: 2px solid var(--color-border); border-radius: var(--radius-md); padding: var(--spacing-lg);">
+                        <h4 style="color: var(--color-primary); margin-bottom: 12px;">${booking.customerName}</h4>
+                        <p style="color: var(--color-text-secondary); margin-bottom: 4px;"><strong>Service:</strong> ${booking.service}</p>
+                        <p style="color: var(--color-text-secondary); margin-bottom: 4px;"><strong>Date:</strong> ${formatDate(booking.bookingDate)}</p>
+                        <p style="color: var(--color-text-secondary); margin-bottom: 4px;"><strong>Time:</strong> ${booking.bookingTime}</p>
+                        <p style="color: var(--color-text-secondary); margin-bottom: 8px;"><strong>Status:</strong> <span style="color: var(--color-primary);">${booking.status}</span></p>
+                        <div style="font-size: 24px; font-weight: 700; color: var(--color-primary);">$${booking.value.toLocaleString()}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function showDashTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.dash-tab').forEach(tab => {
+                tab.style.borderBottomColor = 'transparent';
+                tab.style.color = 'var(--color-text-secondary)';
+            });
+            event.target.style.borderBottomColor = 'var(--color-primary)';
+            event.target.style.color = 'var(--color-primary)';
+
+            // Update content
+            document.querySelectorAll('.dash-tab-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            document.getElementById(tabName + 'TabContent').style.display = 'block';
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return 'N/A';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        function logout() {
+            currentUser = null;
+            dashboardData = null;
+            sessionStorage.removeItem('ottoUser');
+            location.reload();
+        }
+
+        // Check for existing session on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedUser = sessionStorage.getItem('ottoUser');
+            if (savedUser) {
+                try {
+                    currentUser = JSON.parse(savedUser);
+                    showClientDashboard();
+                } catch (e) {
+                    sessionStorage.removeItem('ottoUser');
+                }
+            }
         });
     </script>
 </body>
