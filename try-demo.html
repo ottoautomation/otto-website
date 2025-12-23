@@ -380,9 +380,41 @@
                                     <option value="Pet Services">Pet Services & Veterinary</option>
                                     <option value="Marketing & Creative">Marketing & Creative Agencies</option>
                                     <option value="IT & Technology">IT & Technology Services</option>
-                                    <option value="Other">Other</option>
+                                    <option value="Cleaning Services">Cleaning Services</option>
+                                    <option value="Photography & Videography">Photography & Videography</option>
+                                    <option value="Fitness & Personal Training">Fitness & Personal Training</option>
+                                    <option value="Event Planning">Event Planning</option>
+                                    <option value="Landscaping & Lawn Care">Landscaping & Lawn Care</option>
+                                    <option value="Moving & Storage">Moving & Storage</option>
+                                    <option value="Legal Services">Legal Services</option>
+                                    <option value="Childcare & Daycare">Childcare & Daycare</option>
+                                    <option value="Roofing & Gutters">Roofing & Gutters</option>
+                                    <option value="Appliance Repair">Appliance Repair</option>
+                                    <option value="Flooring">Flooring</option>
+                                    <option value="Therapy & Counseling">Therapy & Counseling</option>
+                                    <option value="Catering">Catering</option>
+                                    <option value="Printing & Signs">Printing & Signs</option>
+                                    <option value="Other">Other (I'll describe my business)</option>
                                 </select>
                             </div>
+
+                            <!-- Custom Industry Input (shown when "Other" is selected) -->
+                            <div class="form-group" id="customIndustryGroup" style="display: none;">
+                                <label>Describe Your Industry *</label>
+                                <input type="text" id="customIndustry" placeholder="e.g., Pool Cleaning, Music Lessons, Dog Walking...">
+                            </div>
+                        </div>
+
+                        <!-- Custom FAQs Section (shown when "Other" is selected) -->
+                        <div class="form-section" id="customFaqSection" style="display: none;">
+                            <h4>Create Your Demo FAQs</h4>
+                            <p style="color: var(--color-text-secondary); font-size: 13px; margin-bottom: var(--spacing-md);">Add 2-5 common questions your customers ask. We'll use these in your demo!</p>
+
+                            <div id="customFaqList" class="faq-list">
+                                <!-- FAQ items will be added here dynamically -->
+                            </div>
+
+                            <button type="button" class="btn-secondary add-faq-btn" id="addCustomFaqBtn" style="margin-top: var(--spacing-md);">+ Add Another FAQ</button>
                         </div>
 
                         <!-- Branding -->
