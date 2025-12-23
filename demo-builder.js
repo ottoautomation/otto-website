@@ -361,11 +361,11 @@ function updateLogoInitials() {
     }
 }
 
-// Update Preview
+// Update Preview - Interactive Demo Chat
 function updatePreview() {
     const preview = document.getElementById('chatbotPreview');
 
-    if (!demoConfig.businessName) {
+    if (!demoConfig.businessName || !demoConfig.industry) {
         preview.innerHTML = `
             <div style="text-align: center; padding-top: 100px; color: var(--color-text-secondary);">
                 <p>👆 Fill out the form to see your AI assistant</p>
@@ -378,14 +378,15 @@ function updatePreview() {
         ? `<img src="${demoConfig.logo}" alt="Logo" style="width: 36px; height: 36px; border-radius: 50%;">`
         : `<div style="width: 36px; height: 36px; background: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; color: ${demoConfig.brandColor};">${demoConfig.businessName.substring(0, 2).toUpperCase()}</div>`;
 
-    // Truncate long answers for preview
-    let botAnswer = demoConfig.faqs.length > 0 ? demoConfig.faqs[0].answer : 'We offer a wide range of services tailored to your needs!';
-    if (botAnswer.length > 100) {
-        botAnswer = botAnswer.substring(0, 100) + '...';
+    // Build example questions from FAQs
+    let exampleQuestions = '';
+    if (demoConfig.faqs.length > 0) {
+        const examples = demoConfig.faqs.slice(0, 2).map(f => `"${f.question}"`).join(' or ');
+        exampleQuestions = `Try asking: ${examples}`;
     }
 
     preview.innerHTML = `
-        <div style="pointer-events: none; user-select: none; display: flex; flex-direction: column; height: 100%; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.15);">
+        <div id="demoChatContainer" style="display: flex; flex-direction: column; height: 100%; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.15);">
             <!-- Chat Header -->
             <div style="background: ${demoConfig.brandColor}; color: #fff; padding: 12px 14px; display: flex; align-items: center; gap: 10px;">
                 ${logoHtml}
@@ -399,62 +400,90 @@ function updatePreview() {
             </div>
 
             <!-- Chat Messages -->
-            <div style="flex: 1; padding: 14px; display: flex; flex-direction: column; gap: 10px; background: #f9fafb;">
-                <!-- Bot Message -->
-                <div style="background: #fff; padding: 10px 14px; border-radius: 16px; border: 1px solid #e5e7eb; max-width: 90%; font-size: 13px; color: #1f2937; line-height: 1.4; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
-                    Hi! I'm the AI assistant for ${demoConfig.businessName}. How can I help you today?
-                </div>
-
-                <!-- Sample User Message -->
-                <div style="background: ${demoConfig.brandColor}; padding: 10px 14px; border-radius: 16px 16px 4px 16px; max-width: 80%; font-size: 13px; color: #fff; align-self: flex-end; line-height: 1.4;">
-                    ${demoConfig.faqs.length > 0 ? demoConfig.faqs[0].question : 'What services do you offer?'}
-                </div>
-
-                <!-- Bot Response -->
-                <div style="background: #fff; padding: 10px 14px; border-radius: 16px; border: 1px solid #e5e7eb; max-width: 90%; font-size: 13px; color: #1f2937; line-height: 1.4; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
-                    ${botAnswer}
+            <div id="demoMessages" style="flex: 1; padding: 14px; display: flex; flex-direction: column; gap: 10px; background: #f9fafb; overflow-y: auto;">
+                <!-- Greeting Message -->
+                <div style="background: #fff; padding: 10px 14px; border-radius: 16px; border: 1px solid #e5e7eb; max-width: 90%; font-size: 13px; color: #1f2937; line-height: 1.5; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                    Hi! I'm the AI assistant for ${demoConfig.businessName}. This is a quick demo so you can see how I work - ask me questions about your business and I'll respond! ${exampleQuestions}
                 </div>
             </div>
 
-            <!-- Chat Input (visual only) -->
+            <!-- Chat Input -->
             <div style="padding: 12px 14px; background: #fff; border-top: 1px solid #e5e7eb;">
-                <div style="display: flex; gap: 8px; align-items: center; background: #f9fafb; padding: 10px 12px; border-radius: 20px; border: 1.5px solid #e5e7eb;">
-                    <span style="flex: 1; color: #9ca3af; font-size: 13px;">Type your message...</span>
-                    <div style="background: ${demoConfig.brandColor}; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                <div style="display: flex; gap: 8px; align-items: center; background: #f9fafb; padding: 6px 12px; border-radius: 20px; border: 1.5px solid #e5e7eb;">
+                    <input type="text" id="demoInput" placeholder="Type your message..." style="flex: 1; background: transparent; border: none; outline: none; font-size: 13px; color: #1f2937; padding: 8px 0;">
+                    <button id="demoSendBtn" style="background: ${demoConfig.brandColor}; width: 32px; height: 32px; border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer;">
                         <span style="color: #000; font-weight: 700; font-size: 14px;">→</span>
-                    </div>
+                    </button>
                 </div>
             </div>
         </div>
     `;
+
+    // Setup demo chat functionality
+    setupDemoChat();
 }
 
-// Update Buttons
+// Setup interactive demo chat
+function setupDemoChat() {
+    const input = document.getElementById('demoInput');
+    const sendBtn = document.getElementById('demoSendBtn');
+    const messagesContainer = document.getElementById('demoMessages');
+
+    if (!input || !sendBtn || !messagesContainer) return;
+
+    const sendMessage = () => {
+        const message = input.value.trim();
+        if (!message) return;
+
+        // Add user message
+        const userMsg = document.createElement('div');
+        userMsg.style.cssText = `background: ${demoConfig.brandColor}; padding: 10px 14px; border-radius: 16px 16px 4px 16px; max-width: 80%; font-size: 13px; color: #fff; align-self: flex-end; line-height: 1.4;`;
+        userMsg.textContent = message;
+        messagesContainer.appendChild(userMsg);
+        input.value = '';
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+        // Find matching FAQ or generate response
+        setTimeout(() => {
+            let response = '';
+            const lowerMsg = message.toLowerCase();
+
+            // Try to match FAQ
+            const faqMatch = demoConfig.faqs.find(faq => {
+                const keywords = faq.question.toLowerCase().replace(/[?,.!]/g, '').split(' ').filter(w => w.length > 3);
+                return keywords.some(kw => lowerMsg.includes(kw));
+            });
+
+            if (faqMatch) {
+                response = faqMatch.answer;
+            } else if (lowerMsg.match(/\b(book|appointment|schedule)\b/)) {
+                response = "I'd be happy to help you schedule! What day works best for you?";
+            } else if (lowerMsg.match(/\b(hour|open|close|when)\b/)) {
+                response = demoConfig.businessHours ? `Our hours are ${demoConfig.businessHours}.` : "We're open during regular business hours!";
+            } else if (lowerMsg.match(/\b(price|cost|much)\b/)) {
+                response = "Pricing depends on your needs. Want me to help you get a quote?";
+            } else if (lowerMsg.match(/\b(thank|thanks)\b/)) {
+                response = "You're welcome! Anything else I can help with?";
+            } else if (lowerMsg.match(/^(hi|hello|hey)/i)) {
+                response = "Hello! How can I help you today?";
+            } else {
+                response = "Great question! Our team can give you more details on that. Is there anything else I can help with?";
+            }
+
+            const botMsg = document.createElement('div');
+            botMsg.style.cssText = 'background: #fff; padding: 10px 14px; border-radius: 16px; border: 1px solid #e5e7eb; max-width: 90%; font-size: 13px; color: #1f2937; line-height: 1.5; box-shadow: 0 1px 2px rgba(0,0,0,0.05);';
+            botMsg.textContent = response;
+            messagesContainer.appendChild(botMsg);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }, 600);
+    };
+
+    input.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+    sendBtn.addEventListener('click', sendMessage);
+}
+
+// Update Buttons (progress bar only now)
 function updateButtons() {
-    const launchBtn = document.getElementById('launchDemoBtn');
-    const dashboardBtn = document.getElementById('viewDashboardBtn');
-
-    // For "Other" industry, also require custom industry description
-    let isValid = demoConfig.businessName && demoConfig.industry;
-    if (demoConfig.industry === 'Other') {
-        isValid = isValid && demoConfig.customIndustry;
-    }
-
-    launchBtn.disabled = !isValid;
-    dashboardBtn.disabled = !isValid;
-
-    if (isValid) {
-        launchBtn.style.opacity = '1';
-        launchBtn.style.cursor = 'pointer';
-        dashboardBtn.style.opacity = '1';
-        dashboardBtn.style.cursor = 'pointer';
-    } else {
-        launchBtn.style.opacity = '0.5';
-        launchBtn.style.cursor = 'not-allowed';
-        dashboardBtn.style.opacity = '0.5';
-        dashboardBtn.style.cursor = 'not-allowed';
-    }
-
     // Update progress bar
     updateProgress();
 }
