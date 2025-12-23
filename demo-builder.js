@@ -375,47 +375,53 @@ function updatePreview() {
     }
 
     const logoHtml = demoConfig.logo
-        ? `<img src="${demoConfig.logo}" alt="Logo" style="width: 40px; height: 40px; border-radius: 50%;">`
-        : `<div style="width: 40px; height: 40px; background: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: ${demoConfig.brandColor};">${demoConfig.businessName.substring(0, 2).toUpperCase()}</div>`;
+        ? `<img src="${demoConfig.logo}" alt="Logo" style="width: 36px; height: 36px; border-radius: 50%;">`
+        : `<div style="width: 36px; height: 36px; background: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; color: ${demoConfig.brandColor};">${demoConfig.businessName.substring(0, 2).toUpperCase()}</div>`;
+
+    // Truncate long answers for preview
+    let botAnswer = demoConfig.faqs.length > 0 ? demoConfig.faqs[0].answer : 'We offer a wide range of services tailored to your needs!';
+    if (botAnswer.length > 100) {
+        botAnswer = botAnswer.substring(0, 100) + '...';
+    }
 
     preview.innerHTML = `
-        <div style="display: flex; flex-direction: column; height: 100%; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.15);">
+        <div style="pointer-events: none; user-select: none; display: flex; flex-direction: column; height: 100%; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.15);">
             <!-- Chat Header -->
-            <div style="background: ${demoConfig.brandColor}; color: #fff; padding: 16px; display: flex; align-items: center; gap: 12px;">
+            <div style="background: ${demoConfig.brandColor}; color: #fff; padding: 12px 14px; display: flex; align-items: center; gap: 10px;">
                 ${logoHtml}
                 <div style="flex: 1;">
-                    <div style="font-weight: 600; font-size: 15px;">${demoConfig.businessName}</div>
-                    <div style="font-size: 12px; opacity: 0.9; display: flex; align-items: center; gap: 5px;">
-                        <span style="width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block;"></span>
+                    <div style="font-weight: 600; font-size: 14px;">${demoConfig.businessName}</div>
+                    <div style="font-size: 11px; opacity: 0.9; display: flex; align-items: center; gap: 4px;">
+                        <span style="width: 6px; height: 6px; background: #4ade80; border-radius: 50%; display: inline-block;"></span>
                         Online
                     </div>
                 </div>
             </div>
 
             <!-- Chat Messages -->
-            <div style="flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; background: #f9fafb;">
+            <div style="flex: 1; padding: 14px; display: flex; flex-direction: column; gap: 10px; background: #f9fafb;">
                 <!-- Bot Message -->
-                <div style="background: #fff; padding: 12px 16px; border-radius: 18px; border: 1px solid #e5e7eb; max-width: 85%; font-size: 14px; color: #1f2937; line-height: 1.5; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                <div style="background: #fff; padding: 10px 14px; border-radius: 16px; border: 1px solid #e5e7eb; max-width: 90%; font-size: 13px; color: #1f2937; line-height: 1.4; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
                     Hi! I'm the AI assistant for ${demoConfig.businessName}. How can I help you today?
                 </div>
 
                 <!-- Sample User Message -->
-                <div style="background: ${demoConfig.brandColor}; padding: 12px 16px; border-radius: 18px 18px 4px 18px; max-width: 75%; font-size: 14px; color: #fff; align-self: flex-end; line-height: 1.5;">
+                <div style="background: ${demoConfig.brandColor}; padding: 10px 14px; border-radius: 16px 16px 4px 16px; max-width: 80%; font-size: 13px; color: #fff; align-self: flex-end; line-height: 1.4;">
                     ${demoConfig.faqs.length > 0 ? demoConfig.faqs[0].question : 'What services do you offer?'}
                 </div>
 
                 <!-- Bot Response -->
-                <div style="background: #fff; padding: 12px 16px; border-radius: 18px; border: 1px solid #e5e7eb; max-width: 85%; font-size: 14px; color: #1f2937; line-height: 1.5; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
-                    ${demoConfig.faqs.length > 0 ? demoConfig.faqs[0].answer : 'We offer a wide range of services tailored to your needs. How can I help you today?'}
+                <div style="background: #fff; padding: 10px 14px; border-radius: 16px; border: 1px solid #e5e7eb; max-width: 90%; font-size: 13px; color: #1f2937; line-height: 1.4; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                    ${botAnswer}
                 </div>
             </div>
 
-            <!-- Chat Input -->
-            <div style="padding: 16px; background: #fff; border-top: 1px solid #e5e7eb;">
-                <div style="display: flex; gap: 10px; align-items: center; background: #f9fafb; padding: 8px 12px; border-radius: 24px; border: 1.5px solid #e5e7eb;">
-                    <input type="text" placeholder="Type your message..." style="flex: 1; background: transparent; border: none; color: #1f2937; outline: none; font-size: 14px; padding: 8px 4px;">
-                    <div style="background: ${demoConfig.brandColor}; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                        <span style="color: #000; font-weight: 700;">→</span>
+            <!-- Chat Input (visual only) -->
+            <div style="padding: 12px 14px; background: #fff; border-top: 1px solid #e5e7eb;">
+                <div style="display: flex; gap: 8px; align-items: center; background: #f9fafb; padding: 10px 12px; border-radius: 20px; border: 1.5px solid #e5e7eb;">
+                    <span style="flex: 1; color: #9ca3af; font-size: 13px;">Type your message...</span>
+                    <div style="background: ${demoConfig.brandColor}; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <span style="color: #000; font-weight: 700; font-size: 14px;">→</span>
                     </div>
                 </div>
             </div>
