@@ -13,18 +13,79 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-            background: #f5f5f5;
+            background: #0a0a0a;
             height: 100vh;
             overflow: hidden;
             margin: 0;
         }
 
+        #mainContainer {
+            display: flex;
+            height: 100vh;
+            max-width: 100%;
+        }
+
+        /* Sidebar with sample questions */
+        #questionsSidebar {
+            width: 280px;
+            background: #111;
+            border-right: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        #sidebarHeader {
+            padding: 16px;
+            border-bottom: 1px solid #333;
+            background: #0a0a0a;
+        }
+
+        #sidebarHeader h3 {
+            color: var(--brand-color, #3AB573);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        #sidebarHeader p {
+            color: #888;
+            font-size: 12px;
+        }
+
+        #questionsList {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+        }
+
+        .sample-question {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            color: #ccc;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            line-height: 1.4;
+        }
+
+        .sample-question:hover {
+            background: #222;
+            border-color: var(--brand-color, #3AB573);
+            color: #fff;
+        }
+
+        /* Chat container */
         #chatContainer {
+            flex: 1;
             display: flex;
             flex-direction: column;
             height: 100vh;
             background: #ffffff;
-            max-width: 100%;
         }
 
         #chatHeader {
@@ -34,7 +95,6 @@
             gap: 12px;
             color: #fff;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
         #chatLogo {
@@ -47,7 +107,6 @@
             font-weight: 700;
             font-size: 15px;
             overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         #chatLogo img {
@@ -79,7 +138,6 @@
             height: 8px;
             background: #4ade80;
             border-radius: 50%;
-            display: inline-block;
         }
 
         #chatMessages {
@@ -99,19 +157,12 @@
             font-size: 14px;
             line-height: 1.5;
             animation: slideIn 0.3s ease;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
             word-wrap: break-word;
         }
 
         @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .message.otto {
@@ -127,36 +178,6 @@
             color: #ffffff;
             align-self: flex-end;
             border-radius: 18px 18px 4px 18px;
-        }
-
-        .quick-replies {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-top: 8px;
-            align-self: flex-start;
-            max-width: 75%;
-        }
-
-        .quick-reply-btn {
-            background: #ffffff;
-            border: 1.5px solid var(--brand-color, #3AB573);
-            color: var(--brand-color, #3AB573);
-            padding: 10px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            text-align: left;
-            transition: all 0.2s;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-        }
-
-        .quick-reply-btn:hover {
-            background: var(--brand-color, #3AB573);
-            color: #ffffff;
-            transform: translateY(-1px);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         #chatInput {
@@ -190,7 +211,6 @@
             font-size: 14px;
             outline: none;
             padding: 8px 4px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
 
         #messageInput::placeholder {
@@ -209,16 +229,10 @@
             font-weight: 700;
             font-size: 16px;
             transition: all 0.2s;
-            flex-shrink: 0;
         }
 
         #sendButton:hover {
             transform: scale(1.05);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-        }
-
-        #sendButton:active {
-            transform: scale(0.95);
         }
 
         .typing-indicator {
@@ -228,9 +242,7 @@
             background: #ffffff;
             border-radius: 18px;
             border: 1px solid #e5e7eb;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
             align-self: flex-start;
-            max-width: 60px;
         }
 
         .typing-dot {
@@ -241,58 +253,101 @@
             animation: typing 1.4s infinite;
         }
 
-        .typing-dot:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .typing-dot:nth-child(3) {
-            animation-delay: 0.4s;
-        }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
 
         @keyframes typing {
-            0%, 60%, 100% {
-                opacity: 0.3;
-                transform: translateY(0);
+            0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+            30% { opacity: 1; transform: translateY(-4px); }
+        }
+
+        #ctaBanner {
+            display: none;
+            margin-top: 12px;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--brand-color, #3AB573) 0%, #2d9c5f 100%);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        #ctaBanner p {
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+            margin: 0 0 10px 0;
+        }
+
+        #ctaBanner button {
+            padding: 10px 20px;
+            background: #fff;
+            color: var(--brand-color, #3AB573);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        @media (max-width: 600px) {
+            #mainContainer { flex-direction: column; }
+            #questionsSidebar {
+                width: 100%;
+                max-height: 140px;
+                border-right: none;
+                border-bottom: 1px solid #333;
             }
-            30% {
-                opacity: 1;
-                transform: translateY(-4px);
+            #questionsList {
+                display: flex;
+                overflow-x: auto;
+                padding: 8px;
+                gap: 8px;
+            }
+            .sample-question {
+                flex-shrink: 0;
+                width: 180px;
+                margin-bottom: 0;
             }
         }
     </style>
 </head>
 <body>
-    <div id="chatContainer">
-        <div id="chatHeader">
-            <div id="chatLogo"></div>
-            <div id="chatHeaderText">
-                <div id="businessName"></div>
-                <div id="onlineStatus">Online</div>
+    <div id="mainContainer">
+        <div id="questionsSidebar">
+            <div id="sidebarHeader">
+                <h3>Try These Questions</h3>
+                <p>Click to copy, then send!</p>
             </div>
+            <div id="questionsList"></div>
         </div>
 
-        <div id="chatMessages">
-            <!-- Messages will be added here -->
-        </div>
-
-        <div id="chatInput">
-            <div id="inputContainer">
-                <input type="text" id="messageInput" placeholder="Type your message...">
-                <button id="sendButton">→</button>
+        <div id="chatContainer">
+            <div id="chatHeader">
+                <div id="chatLogo"></div>
+                <div id="chatHeaderText">
+                    <div id="businessName"></div>
+                    <div id="onlineStatus">Online</div>
+                </div>
             </div>
-            <div id="ctaBanner" style="display: none; margin-top: 12px; padding: 16px; background: linear-gradient(135deg, var(--brand-color, #3AB573) 0%, #2d9c5f 100%); border-radius: 12px; text-align: center; box-shadow: 0 4px 12px rgba(58, 181, 115, 0.25);">
-                <p style="color: #ffffff; font-weight: 600; font-size: 14px; margin: 0 0 10px 0;">Like what you see?</p>
-                <button onclick="window.location.href='demo-signup.html'" style="margin: 0; padding: 10px 20px; background: #ffffff; color: var(--brand-color, #3AB573); border: none; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%; font-size: 14px; transition: all 0.2s;">Get OTTO For My Business →</button>
+
+            <div id="chatMessages"></div>
+
+            <div id="chatInput">
+                <div id="inputContainer">
+                    <input type="text" id="messageInput" placeholder="Type your message...">
+                    <button id="sendButton">→</button>
+                </div>
+                <div id="ctaBanner">
+                    <p>Like what you see?</p>
+                    <button onclick="window.location.href='pricing.html'">Get OTTO For My Business →</button>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
         let config = {};
-        let conversationState = 'welcome';
         let messageCount = 0;
 
-        // Load config
         const savedConfig = localStorage.getItem('ottoDemoConfig');
         if (savedConfig) {
             config = JSON.parse(savedConfig);
@@ -302,11 +357,9 @@
         }
 
         function initializeChat() {
-            // Set brand color
             document.documentElement.style.setProperty('--brand-color', config.brandColor);
             document.getElementById('chatHeader').style.background = config.brandColor;
 
-            // Set logo
             const logoEl = document.getElementById('chatLogo');
             if (config.logo) {
                 logoEl.innerHTML = `<img src="${config.logo}" alt="Logo">`;
@@ -316,38 +369,61 @@
                 logoEl.textContent = config.businessName.substring(0, 2).toUpperCase();
             }
 
-            // Set business name
             document.getElementById('businessName').textContent = config.businessName;
-
-            // Set send button color
             document.getElementById('sendButton').style.background = config.brandColor;
             document.getElementById('sendButton').style.color = '#000';
 
-            // Send welcome message
+            populateSampleQuestions();
+
             setTimeout(() => {
-                sendOttoMessage(`Hi! I'm the AI assistant for ${config.businessName}. I can answer questions about our services, pricing, hours, and more. Just type your question naturally and I'll help!`);
-                showQuickReplies();
+                sendOttoMessage(`Hi! I'm the AI assistant for ${config.businessName}. How can I help you today?`);
             }, 500);
 
-            // Setup input
             document.getElementById('messageInput').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    sendUserMessage();
-                }
+                if (e.key === 'Enter') sendUserMessage();
             });
-
             document.getElementById('sendButton').addEventListener('click', sendUserMessage);
         }
 
+        function populateSampleQuestions() {
+            const questionsList = document.getElementById('questionsList');
+
+            if (config.faqs && config.faqs.length > 0) {
+                config.faqs.forEach(faq => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'sample-question';
+                    questionDiv.textContent = faq.question;
+                    questionDiv.onclick = () => {
+                        document.getElementById('messageInput').value = faq.question;
+                        document.getElementById('messageInput').focus();
+                    };
+                    questionsList.appendChild(questionDiv);
+                });
+            }
+
+            // Add generic questions
+            const extras = ["Can I book an appointment?", "How can I contact you?"];
+            extras.forEach(q => {
+                const div = document.createElement('div');
+                div.className = 'sample-question';
+                div.textContent = q;
+                div.onclick = () => {
+                    document.getElementById('messageInput').value = q;
+                    document.getElementById('messageInput').focus();
+                };
+                questionsList.appendChild(div);
+            });
+        }
+
         function sendOttoMessage(message, showTyping = true) {
-            const messagesContainer = document.getElementById('chatMessages');
+            const container = document.getElementById('chatMessages');
 
             if (showTyping) {
                 const typingDiv = document.createElement('div');
                 typingDiv.className = 'typing-indicator';
                 typingDiv.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
-                messagesContainer.appendChild(typingDiv);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                container.appendChild(typingDiv);
+                container.scrollTop = container.scrollHeight;
 
                 setTimeout(() => {
                     typingDiv.remove();
@@ -359,17 +435,16 @@
         }
 
         function addMessage(message, sender) {
-            const messagesContainer = document.getElementById('chatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${sender}`;
-            messageDiv.textContent = message;
-            messagesContainer.appendChild(messageDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            const container = document.getElementById('chatMessages');
+            const div = document.createElement('div');
+            div.className = `message ${sender}`;
+            div.textContent = message;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
 
-            // Track messages and show CTA after 4 exchanges
             if (sender === 'user') {
                 messageCount++;
-                if (messageCount >= 4) {
+                if (messageCount >= 3) {
                     setTimeout(() => {
                         document.getElementById('ctaBanner').style.display = 'block';
                     }, 2000);
@@ -377,65 +452,6 @@
             }
         }
 
-        function showQuickReplies() {
-            const messagesContainer = document.getElementById('chatMessages');
-            const quickRepliesDiv = document.createElement('div');
-            quickRepliesDiv.className = 'quick-replies';
-
-            // Add FAQ quick replies
-            config.faqs.slice(0, 3).forEach(faq => {
-                const btn = document.createElement('button');
-                btn.className = 'quick-reply-btn';
-                btn.textContent = faq.question;
-                btn.onclick = () => handleQuickReply(faq);
-                quickRepliesDiv.appendChild(btn);
-            });
-
-            // Add booking option
-            const bookingBtn = document.createElement('button');
-            bookingBtn.className = 'quick-reply-btn';
-            bookingBtn.textContent = 'Book an appointment';
-            bookingBtn.onclick = () => handleBooking();
-            quickRepliesDiv.appendChild(bookingBtn);
-
-            messagesContainer.appendChild(quickRepliesDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-
-        function handleQuickReply(faq) {
-            // Remove quick replies
-            document.querySelectorAll('.quick-replies').forEach(el => el.remove());
-
-            // Show user question
-            addMessage(faq.question, 'user');
-
-            // Show OTTO answer
-            setTimeout(() => {
-                sendOttoMessage(faq.answer);
-                setTimeout(() => {
-                    sendOttoMessage('Is there anything else I can help you with?', false);
-                    showQuickReplies();
-                }, 1500);
-            }, 800);
-        }
-
-        function handleBooking() {
-            document.querySelectorAll('.quick-replies').forEach(el => el.remove());
-            addMessage('Book an appointment', 'user');
-
-            setTimeout(() => {
-                sendOttoMessage(`Perfect! What service are you interested in?`);
-                setTimeout(() => {
-                    sendOttoMessage(`Great choice! What date and time works best for you?`, false);
-                    setTimeout(() => {
-                        sendOttoMessage(`Got it! Your appointment is tentatively scheduled. We'll send you a confirmation email shortly with all the details. Is there anything else I can help you with?`, false);
-                        showQuickReplies();
-                    }, 2000);
-                }, 2000);
-            }, 800);
-        }
-
-        // Enhanced FAQ matching function
         function findBestFAQMatch(userMessage) {
             if (!config.faqs || config.faqs.length === 0) return null;
 
@@ -445,130 +461,68 @@
 
             config.faqs.forEach(faq => {
                 const questionLower = faq.question.toLowerCase();
-                const answerLower = faq.answer.toLowerCase();
                 let score = 0;
 
-                // Extract keywords from FAQ question
-                const faqKeywords = questionLower
-                    .replace(/[?,.!]/g, '')
-                    .split(' ')
-                    .filter(word => word.length > 3);
+                const faqKeywords = questionLower.replace(/[?,.!]/g, '').split(' ').filter(w => w.length > 3);
+                faqKeywords.forEach(kw => { if (lowerMsg.includes(kw)) score += 2; });
 
-                // Check for keyword matches
-                faqKeywords.forEach(keyword => {
-                    if (lowerMsg.includes(keyword)) {
-                        score += 2;
-                    }
-                });
+                if (lowerMsg.includes(questionLower.replace(/[?,.!]/g, ''))) score += 10;
 
-                // Bonus for exact phrase matches
-                if (lowerMsg.includes(questionLower.replace(/[?,.!]/g, ''))) {
-                    score += 10;
-                }
-
-                // Check for semantic similarity with common question patterns
-                const questionPatterns = {
-                    'hours': ['hours', 'open', 'close', 'when', 'schedule', 'time'],
-                    'price': ['price', 'cost', 'charge', 'fee', 'rate', 'expensive', 'cheap', 'much'],
-                    'location': ['where', 'location', 'address', 'find', 'visit', 'directions'],
-                    'appointment': ['book', 'appointment', 'schedule', 'reserve', 'consultation'],
-                    'insurance': ['insurance', 'accept', 'coverage', 'plan'],
-                    'service': ['service', 'offer', 'provide', 'do you'],
-                    'availability': ['available', 'accepting', 'taking', 'new'],
-                    'warranty': ['warranty', 'guarantee', 'return', 'refund'],
-                    'shipping': ['ship', 'deliver', 'shipping', 'delivery', 'freight'],
-                    'payment': ['pay', 'payment', 'accept', 'credit', 'cash']
+                const patterns = {
+                    'hours': ['hours', 'open', 'close', 'when', 'time'],
+                    'price': ['price', 'cost', 'charge', 'fee', 'much'],
+                    'appointment': ['book', 'appointment', 'schedule', 'reserve'],
+                    'insurance': ['insurance', 'accept', 'coverage'],
+                    'service': ['service', 'offer', 'provide'],
+                    'estimate': ['estimate', 'quote', 'free']
                 };
 
-                // Check if FAQ and message match same category
-                for (const [category, keywords] of Object.entries(questionPatterns)) {
-                    const faqMatchesCategory = keywords.some(kw => questionLower.includes(kw));
-                    const msgMatchesCategory = keywords.some(kw => lowerMsg.includes(kw));
-
-                    if (faqMatchesCategory && msgMatchesCategory) {
-                        score += 5;
-                    }
+                for (const [cat, kws] of Object.entries(patterns)) {
+                    if (kws.some(k => questionLower.includes(k)) && kws.some(k => lowerMsg.includes(k))) score += 5;
                 }
 
-                if (score > bestScore) {
-                    bestScore = score;
-                    bestMatch = faq;
-                }
+                if (score > bestScore) { bestScore = score; bestMatch = faq; }
             });
 
-            // Only return match if score is high enough
             return bestScore >= 3 ? bestMatch : null;
         }
 
         function sendUserMessage() {
             const input = document.getElementById('messageInput');
             const message = input.value.trim();
-
             if (!message) return;
 
-            document.querySelectorAll('.quick-replies').forEach(el => el.remove());
             addMessage(message, 'user');
             input.value = '';
 
-            // Intelligent response logic
             setTimeout(() => {
                 let response = '';
-                let showReplies = true;
-
                 const lowerMsg = message.toLowerCase();
-
-                // Try to find matching FAQ first
                 const faqMatch = findBestFAQMatch(message);
 
                 if (faqMatch) {
                     response = faqMatch.answer;
-                }
-                // Booking/appointment intent
-                else if (lowerMsg.match(/\b(book|appointment|schedule|reserve|consultation|meet|visit)\b/)) {
-                    handleBooking();
-                    return;
-                }
-                // Emergency/urgent
-                else if (lowerMsg.match(/\b(emergency|urgent|asap|immediately|right now|help)\b/)) {
-                    response = `I understand this is urgent. Let me connect you with our team right away. Would you like to book an immediate consultation?`;
-                }
-                // Positive responses
-                else if (lowerMsg.match(/\b(yes|yeah|yep|sure|okay|ok|yea|definitely|absolutely)\b/)) {
-                    response = `Great! How can I help you further?`;
-                }
-                // Negative responses
-                else if (lowerMsg.match(/\b(no|nope|not|don't|nah)\b/)) {
-                    response = `No problem! Is there anything else I can help you with?`;
-                }
-                // Gratitude
-                else if (lowerMsg.match(/\b(thank|thanks|appreciate)\b/)) {
-                    response = `You're very welcome! Is there anything else I can help you with today?`;
-                }
-                // Greeting
-                else if (lowerMsg.match(/\b(hello|hi|hey|greetings|good morning|good afternoon)\b/)) {
-                    response = `Hello! How can I assist you today?`;
-                }
-                // Goodbye
-                else if (lowerMsg.match(/\b(bye|goodbye|see you|later|have a good)\b/)) {
-                    response = `Thank you for chatting! Feel free to reach out anytime. Have a great day!`;
-                    showReplies = false;
-                }
-                // Default intelligent response
-                else {
-                    // Try to understand intent and provide helpful response
-                    if (lowerMsg.includes('?')) {
-                        response = `That's a great question! Based on what you're asking, I'd recommend scheduling a quick call with our team to give you the most accurate information. Would you like me to help you book that?`;
-                    } else {
-                        response = `I'm here to help! Could you tell me more about what you're looking for? Or I can connect you with our team for personalized assistance.`;
-                    }
+                } else if (lowerMsg.match(/\b(book|appointment|schedule|reserve)\b/)) {
+                    response = `I'd be happy to help you schedule! What day and time works best for you?`;
+                } else if (lowerMsg.match(/\b(hours|open|close|when)\b/)) {
+                    response = config.businessHours ? `Our hours are ${config.businessHours}.` : `We're open during regular business hours. Feel free to contact us!`;
+                } else if (lowerMsg.match(/\b(contact|call|phone|email)\b/)) {
+                    response = `You can reach us through our website or give us a call during business hours!`;
+                } else if (lowerMsg.match(/\b(price|cost|how much|rate|fee)\b/)) {
+                    response = `Pricing varies based on your needs. Would you like a personalized quote?`;
+                } else if (lowerMsg.match(/\b(thank|thanks)\b/)) {
+                    response = `You're welcome! Anything else I can help with?`;
+                } else if (lowerMsg.match(/^(hi|hello|hey)\.?$/i)) {
+                    response = `Hello! How can I help you today?`;
+                } else if (lowerMsg.match(/\b(bye|goodbye)\b/)) {
+                    response = `Thanks for chatting! Have a great day!`;
+                } else if (lowerMsg.includes('?')) {
+                    response = `Great question! For the most accurate answer, I'd recommend reaching out to our team directly. Is there anything else I can help with?`;
+                } else {
+                    response = `Thanks for reaching out! What would you like to know about ${config.businessName}?`;
                 }
 
                 sendOttoMessage(response);
-                if (showReplies) {
-                    setTimeout(() => {
-                        showQuickReplies();
-                    }, 1500);
-                }
             }, 800);
         }
     </script>
