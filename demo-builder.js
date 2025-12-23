@@ -317,29 +317,9 @@ function setupFormListeners() {
         updatePreview();
     });
 
-    // Launch Demo Button
-    document.getElementById('launchDemoBtn').addEventListener('click', function() {
-        if (this.disabled) {
-            showValidationMessage();
-            return;
-        }
-        saveConfigToStorage();
-        window.open('demo-chat.html', '_blank', 'width=400,height=600');
-    });
-
-    // View Dashboard Button
-    document.getElementById('viewDashboardBtn').addEventListener('click', function() {
-        if (this.disabled) {
-            showValidationMessage();
-            return;
-        }
-        saveConfigToStorage();
-        window.location.href = 'demo-dashboard.html';
-    });
-
     // Reset Demo Button
     document.getElementById('resetDemoBtn').addEventListener('click', function() {
-        if (confirm('Are you sure you want to reset your demo? This will clear all your customizations.')) {
+        if (confirm('Reset your demo? This will clear all your customizations.')) {
             localStorage.removeItem('ottoDemoConfig');
             location.reload();
         }
