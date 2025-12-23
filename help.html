@@ -625,6 +625,62 @@
                 }
             });
         });
+
+        // Search functionality
+        const searchInput = document.getElementById('helpSearch');
+        const faqSections = document.querySelectorAll('.faq-section');
+        const faqItems = document.querySelectorAll('.faq-item');
+        const categoryCards = document.querySelector('.help-categories');
+
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase().trim();
+
+            if (searchTerm === '') {
+                // Show everything when search is empty
+                categoryCards.style.display = 'grid';
+                faqSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                faqItems.forEach(item => {
+                    item.style.display = 'block';
+                    item.classList.remove('active');
+                });
+                return;
+            }
+
+            // Hide category cards when searching
+            categoryCards.style.display = 'none';
+
+            // Search through FAQ items
+            faqSections.forEach(section => {
+                const items = section.querySelectorAll('.faq-item');
+                let hasVisibleItems = false;
+
+                items.forEach(item => {
+                    const question = item.querySelector('.faq-question span:first-child').textContent.toLowerCase();
+                    const answer = item.querySelector('.faq-answer').textContent.toLowerCase();
+
+                    if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+                        item.style.display = 'block';
+                        item.classList.add('active'); // Expand matching items
+                        hasVisibleItems = true;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+
+                // Hide section if no matching items
+                section.style.display = hasVisibleItems ? 'block' : 'none';
+            });
+        });
+
+        // Clear search on Escape key
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                searchInput.value = '';
+                searchInput.dispatchEvent(new Event('input'));
+            }
+        });
     </script>
 </body>
 </html>
