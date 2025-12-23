@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Status - OTTO Automation</title>
+    <meta name="description" content="Check the current operational status of OTTO Automation services.">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .status-header {
+            text-align: center;
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+        .status-header.operational {
+            background: rgba(58, 181, 115, 0.1);
+            border: 2px solid var(--color-primary);
+        }
+        .status-header.degraded {
+            background: rgba(255, 189, 46, 0.1);
+            border: 2px solid #ffbd2e;
+        }
+        .status-header.outage {
+            background: rgba(255, 95, 86, 0.1);
+            border: 2px solid #ff5f56;
+        }
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+        }
+        .status-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        .status-dot.operational { background: var(--color-primary); }
+        .status-dot.degraded { background: #ffbd2e; }
+        .status-dot.outage { background: #ff5f56; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .status-header p {
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+        .services-grid {
+            display: grid;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-xl);
+        }
+        .service-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--color-bg-card);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+        }
+        .service-info {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+        .service-info .icon {
+            font-size: 24px;
+        }
+        .service-name {
+            font-weight: 600;
+            color: var(--color-text);
+        }
+        .service-description {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+        }
+        .service-status {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .service-status.operational { color: var(--color-primary); }
+        .service-status.degraded { color: #ffbd2e; }
+        .service-status.outage { color: #ff5f56; }
+        .service-status .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .service-status.operational .dot { background: var(--color-primary); }
+        .service-status.degraded .dot { background: #ffbd2e; }
+        .service-status.outage .dot { background: #ff5f56; }
+        .uptime-section {
+            background: var(--color-bg-card);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-xl);
+        }
+        .uptime-section h2 {
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-lg);
+            font-size: 20px;
+        }
+        .uptime-bar {
+            display: flex;
+            gap: 2px;
+            margin-bottom: var(--spacing-md);
+        }
+        .uptime-day {
+            flex: 1;
+            height: 32px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .uptime-day:hover {
+            transform: scaleY(1.2);
+        }
+        .uptime-day.operational { background: var(--color-primary); }
+        .uptime-day.degraded { background: #ffbd2e; }
+        .uptime-day.outage { background: #ff5f56; }
+        .uptime-legend {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--color-text-secondary);
+        }
+        .uptime-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+            padding-top: var(--spacing-lg);
+            border-top: 1px solid var(--color-border);
+        }
+        .uptime-stat {
+            text-align: center;
+        }
+        .uptime-stat .value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+        .uptime-stat .label {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+        }
+        .incidents-section {
+            background: var(--color-bg-card);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-xl);
+        }
+        .incidents-section h2 {
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-lg);
+            font-size: 20px;
+        }
+        .incident {
+            padding: var(--spacing-lg) 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .incident:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .incident-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--spacing-sm);
+        }
+        .incident-title {
+            font-weight: 600;
+            color: var(--color-text);
+        }
+        .incident-date {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+        }
+        .incident-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .incident-status.resolved {
+            background: rgba(58, 181, 115, 0.1);
+            color: var(--color-primary);
+        }
+        .incident-status.investigating {
+            background: rgba(255, 189, 46, 0.1);
+            color: #ffbd2e;
+        }
+        .incident-description {
+            color: var(--color-text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .no-incidents {
+            text-align: center;
+            padding: var(--spacing-xl);
+            color: var(--color-text-secondary);
+        }
+        .no-incidents .icon {
+            font-size: 48px;
+            margin-bottom: var(--spacing-md);
+        }
+        .subscribe-section {
+            background: linear-gradient(135deg, rgba(58, 181, 115, 0.1) 0%, rgba(58, 181, 115, 0.05) 100%);
+            border: 2px solid var(--color-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            text-align: center;
+        }
+        .subscribe-section h2 {
+            color: var(--color-text);
+            margin-bottom: var(--spacing-sm);
+        }
+        .subscribe-section p {
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-lg);
+        }
+        .subscribe-form {
+            display: flex;
+            gap: var(--spacing-md);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .subscribe-form input {
+            flex: 1;
+            padding: var(--spacing-md) var(--spacing-lg);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: var(--color-bg-card);
+            color: var(--color-text);
+        }
+        .subscribe-form input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+        @media (max-width: 600px) {
+            .subscribe-form {
+                flex-direction: column;
+            }
+            .service-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--spacing-md);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <span class="logo-text">OTTO</span>
+                    <span class="logo-subtext">AUTOMATION</span>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="index.html#how-it-works">How It Works</a>
+                    <a href="index.html#features">Features</a>
+                    <a href="pricing.html">Pricing</a>
+                    <a href="why-otto.html">Why OTTO?</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="try-demo.html" class="btn-primary">Try It Free</a>
+                </div>
+                <div class="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" style="min-height: auto; padding: 160px 0 40px;">
+        <div class="container">
+            <div class="hero-content" style="grid-template-columns: 1fr; text-align: center;">
+                <div class="hero-text">
+                    <h1 class="hero-title">System Status</h1>
+                    <p class="hero-subtitle">Real-time status of OTTO Automation services.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Status Content -->
+    <section style="padding: var(--spacing-xl) 0 var(--spacing-3xl); background-color: var(--color-bg);">
+        <div class="container">
+            <!-- Overall Status -->
+            <div class="status-header operational">
+                <div class="status-indicator">
+                    <span class="status-dot operational"></span>
+                    <span style="color: var(--color-primary);">All Systems Operational</span>
+                </div>
+                <p>Last updated: <span id="lastUpdate">Just now</span></p>
+            </div>
+
+            <!-- Individual Services -->
+            <div class="services-grid">
+                <div class="service-row">
+                    <div class="service-info">
+                        <span class="icon">🤖</span>
+                        <div>
+                            <div class="service-name">AI Chatbot Engine</div>
+                            <div class="service-description">Core AI processing and responses</div>
+                        </div>
+                    </div>
+                    <div class="service-status operational">
+                        <span class="dot"></span>
+                        <span>Operational</span>
+                    </div>
+                </div>
+
+                <div class="service-row">
+                    <div class="service-info">
+                        <span class="icon">💬</span>
+                        <div>
+                            <div class="service-name">Chat Widget</div>
+                            <div class="service-description">Website chat interface</div>
+                        </div>
+                    </div>
+                    <div class="service-status operational">
+                        <span class="dot"></span>
+                        <span>Operational</span>
+                    </div>
+                </div>
+
+                <div class="service-row">
+                    <div class="service-info">
+                        <span class="icon">📊</span>
+                        <div>
+                            <div class="service-name">Analytics Dashboard</div>
+                            <div class="service-description">Reporting and insights</div>
+                        </div>
+                    </div>
+                    <div class="service-status operational">
+                        <span class="dot"></span>
+                        <span>Operational</span>
+                    </div>
+                </div>
+
+                <div class="service-row">
+                    <div class="service-info">
+                        <span class="icon">🔗</span>
+                        <div>
+                            <div class="service-name">Integrations</div>
+                            <div class="service-description">CRM, calendar, and Zapier connections</div>
+                        </div>
+                    </div>
+                    <div class="service-status operational">
+                        <span class="dot"></span>
+                        <span>Operational</span>
+                    </div>
+                </div>
+
+                <div class="service-row">
+                    <div class="service-info">
+                        <span class="icon">📧</span>
+                        <div>
+                            <div class="service-name">Email Notifications</div>
+                            <div class="service-description">Lead alerts and reports</div>
+                        </div>
+                    </div>
+                    <div class="service-status operational">
+                        <span class="dot"></span>
+                        <span>Operational</span>
+                    </div>
+                </div>
+
+                <div class="service-row">
+                    <div class="service-info">
+                        <span class="icon">💳</span>
+                        <div>
+                            <div class="service-name">Billing & Payments</div>
+                            <div class="service-description">Stripe payment processing</div>
+                        </div>
+                    </div>
+                    <div class="service-status operational">
+                        <span class="dot"></span>
+                        <span>Operational</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Uptime -->
+            <div class="uptime-section">
+                <h2>90-Day Uptime</h2>
+                <div class="uptime-bar" id="uptimeBar">
+                    <!-- Generated by JS -->
+                </div>
+                <div class="uptime-legend">
+                    <span>90 days ago</span>
+                    <span>Today</span>
+                </div>
+                <div class="uptime-stats">
+                    <div class="uptime-stat">
+                        <div class="value">99.98%</div>
+                        <div class="label">Overall Uptime</div>
+                    </div>
+                    <div class="uptime-stat">
+                        <div class="value">0</div>
+                        <div class="label">Incidents (30 days)</div>
+                    </div>
+                    <div class="uptime-stat">
+                        <div class="value">&lt;50ms</div>
+                        <div class="label">Avg Response Time</div>
+                    </div>
+                    <div class="uptime-stat">
+                        <div class="value">24/7</div>
+                        <div class="label">Monitoring</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Incidents -->
+            <div class="incidents-section">
+                <h2>Recent Incidents</h2>
+                <div class="no-incidents">
+                    <div class="icon">✅</div>
+                    <p>No incidents reported in the last 90 days.</p>
+                    <p style="font-size: 14px;">All systems have been running smoothly!</p>
+                </div>
+                <!-- Example incident (hidden by default)
+                <div class="incident">
+                    <div class="incident-header">
+                        <div>
+                            <div class="incident-title">Brief API Latency</div>
+                            <div class="incident-date">December 15, 2024</div>
+                        </div>
+                        <span class="incident-status resolved">Resolved</span>
+                    </div>
+                    <div class="incident-description">
+                        We experienced brief increased latency on our API servers. The issue was identified and resolved within 15 minutes. No data was affected.
+                    </div>
+                </div>
+                -->
+            </div>
+
+            <!-- Subscribe -->
+            <div class="subscribe-section">
+                <h2>Get Status Updates</h2>
+                <p>Subscribe to receive notifications about scheduled maintenance and service disruptions.</p>
+                <form class="subscribe-form" onsubmit="handleSubscribe(event)">
+                    <input type="email" placeholder="Enter your email" required>
+                    <button type="submit" class="btn-primary">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>OTTO AUTOMATION</h4>
+                    <ul>
+                        <li><a href="why-otto.html">About Us</a></li>
+                        <li><a href="index.html#how-it-works">How It Works</a></li>
+                        <li><a href="pricing.html">Pricing</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="index.html#features">Features</a></li>
+                        <li><a href="pricing.html">Integrations</a></li>
+                        <li><a href="security.html">Security</a></li>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="contact.html">Contact Support</a></li>
+                        <li><a href="try-demo.html">Try Free Demo</a></li>
+                        <li><a href="help.html">Help Center</a></li>
+                        <li><a href="status.html">System Status</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="gdpr.html">GDPR Compliance</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 OTTO Automation | Blackwell, Texas, US</p>
+                <div class="trust-badges">
+                    <span>SSL Secure</span>
+                    <span>GDPR Compliant</span>
+                    <span>99.9% Uptime</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Generate uptime bar
+        const uptimeBar = document.getElementById('uptimeBar');
+        for (let i = 0; i < 90; i++) {
+            const day = document.createElement('div');
+            day.className = 'uptime-day operational';
+            day.title = `${90 - i} days ago - Operational`;
+            uptimeBar.appendChild(day);
+        }
+
+        // Update timestamp
+        function updateTimestamp() {
+            const now = new Date();
+            document.getElementById('lastUpdate').textContent = now.toLocaleTimeString();
+        }
+        updateTimestamp();
+        setInterval(updateTimestamp, 60000);
+
+        // Subscribe handler
+        function handleSubscribe(e) {
+            e.preventDefault();
+            const email = e.target.querySelector('input').value;
+            alert('Thanks for subscribing! You\'ll receive status updates at ' + email);
+            e.target.reset();
+        }
+    </script>
+</body>
+</html>

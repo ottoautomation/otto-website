@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Center - OTTO Automation</title>
+    <meta name="description" content="Get help with OTTO Automation. Find answers to common questions, setup guides, and troubleshooting tips.">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .help-search {
+            max-width: 600px;
+            margin: 0 auto var(--spacing-2xl);
+        }
+        .help-search input {
+            width: 100%;
+            padding: var(--spacing-md) var(--spacing-lg);
+            font-size: 18px;
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            background: var(--color-bg-card);
+            color: var(--color-text);
+        }
+        .help-search input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+        .help-search input::placeholder {
+            color: var(--color-text-secondary);
+        }
+        .help-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-2xl);
+        }
+        .help-category {
+            background: var(--color-bg-card);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .help-category:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-5px);
+        }
+        .help-category .icon {
+            font-size: 36px;
+            margin-bottom: var(--spacing-md);
+        }
+        .help-category h3 {
+            color: var(--color-text);
+            margin-bottom: var(--spacing-sm);
+            font-size: 18px;
+        }
+        .help-category p {
+            color: var(--color-text-secondary);
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+        .faq-section {
+            background: var(--color-bg-card);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-2xl);
+            margin-bottom: var(--spacing-xl);
+        }
+        .faq-section h2 {
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-lg);
+            font-size: 24px;
+        }
+        .faq-item {
+            border-bottom: 1px solid var(--color-border);
+            padding: var(--spacing-lg) 0;
+        }
+        .faq-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            color: var(--color-text);
+            font-weight: 600;
+            font-size: 16px;
+        }
+        .faq-question:hover {
+            color: var(--color-primary);
+        }
+        .faq-toggle {
+            font-size: 24px;
+            color: var(--color-primary);
+            transition: transform 0.3s ease;
+        }
+        .faq-answer {
+            display: none;
+            padding-top: var(--spacing-md);
+            color: var(--color-text-secondary);
+            line-height: 1.8;
+        }
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+        .faq-item.active .faq-toggle {
+            transform: rotate(45deg);
+        }
+        .contact-banner {
+            background: linear-gradient(135deg, rgba(58, 181, 115, 0.1) 0%, rgba(58, 181, 115, 0.05) 100%);
+            border: 2px solid var(--color-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-2xl);
+            text-align: center;
+            margin-top: var(--spacing-xl);
+        }
+        .contact-banner h2 {
+            color: var(--color-text);
+            margin-bottom: var(--spacing-md);
+        }
+        .contact-banner p {
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-lg);
+        }
+        .contact-options {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-lg);
+            flex-wrap: wrap;
+        }
+        .contact-option {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            color: var(--color-text);
+            text-decoration: none;
+        }
+        .contact-option:hover {
+            color: var(--color-primary);
+        }
+        .guide-list {
+            list-style: none;
+            padding: 0;
+        }
+        .guide-list li {
+            padding: var(--spacing-md) 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .guide-list li:last-child {
+            border-bottom: none;
+        }
+        .guide-list a {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            color: var(--color-text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .guide-list a:hover {
+            color: var(--color-primary);
+        }
+        .guide-list .arrow {
+            margin-left: auto;
+            color: var(--color-primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <span class="logo-text">OTTO</span>
+                    <span class="logo-subtext">AUTOMATION</span>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="index.html#how-it-works">How It Works</a>
+                    <a href="index.html#features">Features</a>
+                    <a href="pricing.html">Pricing</a>
+                    <a href="why-otto.html">Why OTTO?</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="try-demo.html" class="btn-primary">Try It Free</a>
+                </div>
+                <div class="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" style="min-height: auto; padding: 160px 0 40px;">
+        <div class="container">
+            <div class="hero-content" style="grid-template-columns: 1fr; text-align: center;">
+                <div class="hero-text">
+                    <h1 class="hero-title">Help Center</h1>
+                    <p class="hero-subtitle">Find answers, guides, and support for your OTTO chatbot.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Help Content -->
+    <section style="padding: var(--spacing-xl) 0 var(--spacing-3xl); background-color: var(--color-bg);">
+        <div class="container">
+            <!-- Search -->
+            <div class="help-search">
+                <input type="text" placeholder="Search for help..." id="helpSearch">
+            </div>
+
+            <!-- Categories -->
+            <div class="help-categories">
+                <a href="#getting-started" class="help-category">
+                    <div class="icon">🚀</div>
+                    <h3>Getting Started</h3>
+                    <p>Setup guides and first steps with OTTO</p>
+                </a>
+                <a href="#installation" class="help-category">
+                    <div class="icon">🔧</div>
+                    <h3>Installation</h3>
+                    <p>How to add OTTO to your website</p>
+                </a>
+                <a href="#customization" class="help-category">
+                    <div class="icon">🎨</div>
+                    <h3>Customization</h3>
+                    <p>Branding, colors, and personalization</p>
+                </a>
+                <a href="#integrations" class="help-category">
+                    <div class="icon">🔗</div>
+                    <h3>Integrations</h3>
+                    <p>Connect with CRM, calendars, and more</p>
+                </a>
+                <a href="#billing" class="help-category">
+                    <div class="icon">💳</div>
+                    <h3>Billing & Plans</h3>
+                    <p>Payments, upgrades, and invoices</p>
+                </a>
+                <a href="#troubleshooting" class="help-category">
+                    <div class="icon">🔍</div>
+                    <h3>Troubleshooting</h3>
+                    <p>Common issues and solutions</p>
+                </a>
+            </div>
+
+            <!-- Getting Started FAQ -->
+            <div class="faq-section" id="getting-started">
+                <h2>Getting Started</h2>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How do I get started with OTTO?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Getting started is easy! Here's what to expect:</p>
+                        <ol style="margin-left: 20px; margin-top: 10px;">
+                            <li>Choose a plan that fits your business needs</li>
+                            <li>Complete the onboarding form with your business details</li>
+                            <li>Our team builds your custom chatbot (3-7 business days)</li>
+                            <li>You receive embed code to add to your website</li>
+                            <li>OTTO goes live and starts capturing leads!</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What information do I need to provide?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>During onboarding, we'll ask for:</p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>Your business name and industry</li>
+                            <li>Business hours and contact information</li>
+                            <li>Common FAQs your customers ask</li>
+                            <li>Your logo and brand colors</li>
+                            <li>Any specific greetings or personality you want</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How long does setup take?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Most chatbots are ready within 3-7 business days after you complete the onboarding form. Complex integrations or custom requirements may take a bit longer - we'll communicate timelines clearly.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can I try before I buy?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes! Visit our <a href="try-demo.html" style="color: var(--color-primary);">Try Demo page</a> to interact with a sample OTTO chatbot. You can see how it handles questions, captures leads, and represents your business.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Installation FAQ -->
+            <div class="faq-section" id="installation">
+                <h2>Installation</h2>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How do I install OTTO on my website?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>After your chatbot is built, you'll receive a simple embed code. Just paste it before the closing &lt;/body&gt; tag on your website. It works with any website platform including WordPress, Shopify, Wix, Squarespace, and custom sites.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Does OTTO work with WordPress?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Absolutely! You can add the embed code using a plugin like "Insert Headers and Footers" or by editing your theme's footer.php file. We provide step-by-step instructions for WordPress during setup.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Will OTTO slow down my website?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>No! OTTO loads asynchronously, meaning it won't block your page from loading. The widget is lightweight and optimized for performance. Your visitors won't notice any slowdown.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can I install OTTO on multiple websites?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Each subscription covers one website/domain. If you need OTTO on multiple sites, you'll need separate subscriptions for each. Contact us for multi-site discounts.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customization FAQ -->
+            <div class="faq-section" id="customization">
+                <h2>Customization</h2>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can I change OTTO's colors to match my brand?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes! OTTO is fully customizable to match your brand. We can change the primary color, button colors, chat bubble style, and more. Just provide your brand colors during onboarding or request changes anytime.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can I add my logo to the chat widget?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Absolutely! Your logo appears in the chat header and helps customers recognize they're chatting with your business. Upload your logo during onboarding in PNG or JPG format.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How do I update my chatbot's FAQs?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Contact our support team with your updated FAQs and we'll update your chatbot within 24-48 hours. Pro and Elite plans include more frequent updates.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can I change the greeting message?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes! You can customize the initial greeting, the chatbot's name, its personality/tone, and how it introduces itself. Just let us know what you'd like.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Integrations FAQ -->
+            <div class="faq-section" id="integrations">
+                <h2>Integrations</h2>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What CRM systems does OTTO integrate with?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>OTTO integrates with popular CRMs including HubSpot, Salesforce, Zoho, Pipedrive, and more. Pro and Elite plans include direct CRM integrations. We also connect via Zapier to 5,000+ other apps.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can OTTO book appointments on my calendar?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes! Pro and Elite plans include calendar integration with Google Calendar, Outlook, Calendly, and more. OTTO can check availability and book appointments 24/7.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How does Zapier integration work?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>When OTTO captures a lead, it can trigger a Zapier workflow. You can then send that lead to any of 5,000+ apps - your email, CRM, spreadsheet, SMS service, and more. We help you set this up.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Billing FAQ -->
+            <div class="faq-section" id="billing">
+                <h2>Billing & Plans</h2>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What's included in the setup fee?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>The one-time setup fee covers custom development of your AI chatbot, including training it on your business information, customizing the design, and configuring integrations. It's a one-time payment, not recurring.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can I cancel my subscription?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, you can cancel anytime with 30 days written notice. Your chatbot will remain active until the end of your current billing period. Setup fees are non-refundable as they cover completed work.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can I upgrade or downgrade my plan?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes! You can upgrade anytime and only pay the difference. Downgrades take effect at the start of your next billing cycle. Contact us to make changes.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What payment methods do you accept?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We accept all major credit cards (Visa, Mastercard, American Express) through Stripe, our secure payment processor. We can also arrange invoicing for annual plans.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Troubleshooting FAQ -->
+            <div class="faq-section" id="troubleshooting">
+                <h2>Troubleshooting</h2>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>My chatbot isn't appearing on my website</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Check that:</p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>The embed code is placed before the closing &lt;/body&gt; tag</li>
+                            <li>You've cleared your browser cache</li>
+                            <li>There are no JavaScript errors on the page</li>
+                            <li>Ad blockers are disabled (they can sometimes block widgets)</li>
+                        </ul>
+                        <p style="margin-top: 10px;">Still having issues? <a href="contact.html" style="color: var(--color-primary);">Contact support</a> and we'll help!</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>OTTO is giving incorrect answers</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Send us the specific questions and incorrect answers, and we'll update OTTO's knowledge base. This usually takes 24-48 hours to fix.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>I'm not receiving lead notifications</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Check your spam folder first. If notifications are still missing, verify your email address is correct in your account settings. You can also check your dashboard directly for captured leads.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>The chat widget looks broken on mobile</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>OTTO is designed to be mobile-responsive. If you're seeing display issues, send us a screenshot and your website URL. It may be a CSS conflict we can resolve quickly.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Banner -->
+            <div class="contact-banner">
+                <h2>Still Need Help?</h2>
+                <p>Our support team is here for you. We typically respond within 4 hours.</p>
+                <div class="contact-options">
+                    <a href="mailto:ottoai.official@gmail.com" class="contact-option">
+                        <span>📧</span>
+                        <span>ottoai.official@gmail.com</span>
+                    </a>
+                    <a href="tel:325-933-9154" class="contact-option">
+                        <span>📞</span>
+                        <span>325-933-9154</span>
+                    </a>
+                    <a href="contact.html" class="contact-option">
+                        <span>💬</span>
+                        <span>Contact Form</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>OTTO AUTOMATION</h4>
+                    <ul>
+                        <li><a href="why-otto.html">About Us</a></li>
+                        <li><a href="index.html#how-it-works">How It Works</a></li>
+                        <li><a href="pricing.html">Pricing</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="index.html#features">Features</a></li>
+                        <li><a href="pricing.html">Integrations</a></li>
+                        <li><a href="security.html">Security</a></li>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="contact.html">Contact Support</a></li>
+                        <li><a href="try-demo.html">Try Free Demo</a></li>
+                        <li><a href="help.html">Help Center</a></li>
+                        <li><a href="status.html">System Status</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="gdpr.html">GDPR Compliance</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 OTTO Automation | Blackwell, Texas, US</p>
+                <div class="trust-badges">
+                    <span>SSL Secure</span>
+                    <span>GDPR Compliant</span>
+                    <span>99.9% Uptime</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // FAQ Toggle functionality
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const faqItem = question.parentElement;
+                faqItem.classList.toggle('active');
+            });
+        });
+
+        // Smooth scroll for category links
+        document.querySelectorAll('.help-category').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

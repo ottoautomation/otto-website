@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security - OTTO Automation</title>
+    <meta name="description" content="Learn how OTTO Automation protects your data with enterprise-grade security measures.">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .security-content {
+            background-color: var(--color-bg-card);
+            padding: var(--spacing-2xl);
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--color-border);
+            margin-top: var(--spacing-xl);
+        }
+        .security-content h2 {
+            color: var(--color-primary);
+            margin-top: var(--spacing-xl);
+            margin-bottom: var(--spacing-md);
+            font-size: 22px;
+        }
+        .security-content h2:first-child {
+            margin-top: 0;
+        }
+        .security-content p, .security-content li {
+            color: var(--color-text-secondary);
+            line-height: 1.8;
+            margin-bottom: var(--spacing-md);
+        }
+        .security-content ul {
+            margin-left: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+        .security-content li {
+            margin-bottom: var(--spacing-sm);
+        }
+        .security-content strong {
+            color: var(--color-text);
+        }
+        .security-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+        }
+        .security-card {
+            background: rgba(58, 181, 115, 0.05);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            text-align: center;
+        }
+        .security-card .icon {
+            font-size: 48px;
+            margin-bottom: var(--spacing-md);
+        }
+        .security-card h3 {
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-sm);
+            font-size: 18px;
+        }
+        .security-card p {
+            color: var(--color-text-secondary);
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+        .security-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(58, 181, 115, 0.1);
+            border: 1px solid var(--color-primary);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin: var(--spacing-sm);
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+        .badges-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: var(--spacing-xl) 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <span class="logo-text">OTTO</span>
+                    <span class="logo-subtext">AUTOMATION</span>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="index.html#how-it-works">How It Works</a>
+                    <a href="index.html#features">Features</a>
+                    <a href="pricing.html">Pricing</a>
+                    <a href="why-otto.html">Why OTTO?</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="try-demo.html" class="btn-primary">Try It Free</a>
+                </div>
+                <div class="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" style="min-height: auto; padding: 160px 0 40px;">
+        <div class="container">
+            <div class="hero-content" style="grid-template-columns: 1fr; text-align: center;">
+                <div class="hero-text">
+                    <h1 class="hero-title">Enterprise-Grade Security</h1>
+                    <p class="hero-subtitle">Your data is protected with industry-leading security measures. We take security seriously so you can focus on growing your business.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Content -->
+    <section style="padding: var(--spacing-xl) 0 var(--spacing-3xl); background-color: var(--color-bg);">
+        <div class="container">
+            <div class="badges-container">
+                <span class="security-badge">SSL Encrypted</span>
+                <span class="security-badge">GDPR Compliant</span>
+                <span class="security-badge">SOC 2 Standards</span>
+                <span class="security-badge">99.9% Uptime</span>
+            </div>
+
+            <div class="security-grid">
+                <div class="security-card">
+                    <div class="icon">🔐</div>
+                    <h3>End-to-End Encryption</h3>
+                    <p>All data transmitted between your website and our servers is encrypted using TLS 1.3, the latest encryption standard.</p>
+                </div>
+                <div class="security-card">
+                    <div class="icon">🛡️</div>
+                    <h3>Data Protection</h3>
+                    <p>Your business data and customer conversations are stored securely with AES-256 encryption at rest.</p>
+                </div>
+                <div class="security-card">
+                    <div class="icon">🔒</div>
+                    <h3>Secure Infrastructure</h3>
+                    <p>Hosted on enterprise-grade cloud infrastructure with multiple layers of physical and network security.</p>
+                </div>
+                <div class="security-card">
+                    <div class="icon">👁️</div>
+                    <h3>24/7 Monitoring</h3>
+                    <p>Our security team monitors systems around the clock to detect and respond to potential threats.</p>
+                </div>
+                <div class="security-card">
+                    <div class="icon">🔄</div>
+                    <h3>Regular Backups</h3>
+                    <p>Automated daily backups ensure your data is always recoverable in case of any issues.</p>
+                </div>
+                <div class="security-card">
+                    <div class="icon">✅</div>
+                    <h3>Access Controls</h3>
+                    <p>Strict role-based access controls ensure only authorized personnel can access sensitive systems.</p>
+                </div>
+            </div>
+
+            <div class="security-content">
+                <h2>Our Security Commitment</h2>
+                <p>At OTTO Automation, security isn't an afterthought - it's built into everything we do. We understand that when you trust us with your business and your customers' data, you expect the highest levels of protection.</p>
+
+                <h2>Data Encryption</h2>
+                <p><strong>In Transit:</strong> All data transmitted between your website, your customers, and our servers is encrypted using TLS 1.3 (Transport Layer Security). This ensures that conversations and sensitive information cannot be intercepted.</p>
+                <p><strong>At Rest:</strong> Data stored in our databases is encrypted using AES-256 encryption, the same standard used by banks and government agencies.</p>
+
+                <h2>Infrastructure Security</h2>
+                <p>Our services are hosted on enterprise-grade cloud infrastructure that provides:</p>
+                <ul>
+                    <li><strong>Physical Security:</strong> Data centers with 24/7 security, biometric access controls, and video surveillance</li>
+                    <li><strong>Network Security:</strong> Firewalls, intrusion detection systems, and DDoS protection</li>
+                    <li><strong>Geographic Redundancy:</strong> Data replicated across multiple locations for disaster recovery</li>
+                    <li><strong>Regular Audits:</strong> Third-party security assessments and penetration testing</li>
+                </ul>
+
+                <h2>Application Security</h2>
+                <p>We follow security best practices in our development process:</p>
+                <ul>
+                    <li><strong>Secure Coding:</strong> Our development team follows OWASP guidelines to prevent common vulnerabilities</li>
+                    <li><strong>Code Reviews:</strong> All code changes undergo security review before deployment</li>
+                    <li><strong>Dependency Scanning:</strong> Automated scanning for vulnerabilities in third-party libraries</li>
+                    <li><strong>Regular Updates:</strong> Security patches applied promptly to all systems</li>
+                </ul>
+
+                <h2>Access Management</h2>
+                <p>We implement strict access controls to protect your data:</p>
+                <ul>
+                    <li><strong>Role-Based Access:</strong> Team members only have access to systems necessary for their role</li>
+                    <li><strong>Multi-Factor Authentication:</strong> Required for all internal system access</li>
+                    <li><strong>Audit Logging:</strong> All access to sensitive data is logged and monitored</li>
+                    <li><strong>Employee Training:</strong> Regular security awareness training for all staff</li>
+                </ul>
+
+                <h2>AI & Data Privacy</h2>
+                <p>We take special care with how AI processes your data:</p>
+                <ul>
+                    <li><strong>No Training on Your Data:</strong> Your conversations are not used to train AI models</li>
+                    <li><strong>Data Isolation:</strong> Each customer's data is logically separated</li>
+                    <li><strong>Minimal Data Retention:</strong> We only keep data as long as necessary to provide our services</li>
+                    <li><strong>Transparent Processing:</strong> You control what information your chatbot collects</li>
+                </ul>
+
+                <h2>Compliance</h2>
+                <p>OTTO Automation is committed to meeting industry standards and regulations:</p>
+                <ul>
+                    <li><strong>GDPR:</strong> Full compliance with European data protection requirements. See our <a href="gdpr.html" style="color: var(--color-primary);">GDPR Compliance page</a>.</li>
+                    <li><strong>CCPA:</strong> California Consumer Privacy Act compliance for US customers</li>
+                    <li><strong>SOC 2:</strong> We follow SOC 2 security standards for service organizations</li>
+                    <li><strong>PCI DSS:</strong> Payment processing handled by Stripe, a PCI-compliant provider</li>
+                </ul>
+
+                <h2>Incident Response</h2>
+                <p>In the unlikely event of a security incident:</p>
+                <ul>
+                    <li>Our security team is on-call 24/7 to respond to any issues</li>
+                    <li>Affected customers will be notified within 72 hours as required by GDPR</li>
+                    <li>We conduct thorough post-incident reviews to prevent future occurrences</li>
+                    <li>Transparent communication throughout any incident</li>
+                </ul>
+
+                <h2>Your Responsibilities</h2>
+                <p>Security is a shared responsibility. We recommend:</p>
+                <ul>
+                    <li>Using strong, unique passwords for your OTTO account</li>
+                    <li>Enabling two-factor authentication when available</li>
+                    <li>Keeping your embed code and API keys confidential</li>
+                    <li>Regularly reviewing your chatbot's collected data</li>
+                    <li>Reporting any suspicious activity to our team immediately</li>
+                </ul>
+
+                <h2>Questions?</h2>
+                <p>If you have questions about our security practices or want to report a security concern, please contact us:</p>
+                <ul>
+                    <li><strong>Email:</strong> <a href="mailto:ottoai.official@gmail.com" style="color: var(--color-primary);">ottoai.official@gmail.com</a></li>
+                    <li><strong>Phone:</strong> 325-933-9154</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>OTTO AUTOMATION</h4>
+                    <ul>
+                        <li><a href="why-otto.html">About Us</a></li>
+                        <li><a href="index.html#how-it-works">How It Works</a></li>
+                        <li><a href="pricing.html">Pricing</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="index.html#features">Features</a></li>
+                        <li><a href="pricing.html">Integrations</a></li>
+                        <li><a href="security.html">Security</a></li>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="contact.html">Contact Support</a></li>
+                        <li><a href="try-demo.html">Try Free Demo</a></li>
+                        <li><a href="help.html">Help Center</a></li>
+                        <li><a href="status.html">System Status</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="gdpr.html">GDPR Compliance</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 OTTO Automation | Blackwell, Texas, US</p>
+                <div class="trust-badges">
+                    <span>SSL Secure</span>
+                    <span>GDPR Compliant</span>
+                    <span>99.9% Uptime</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
