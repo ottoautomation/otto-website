@@ -376,42 +376,44 @@ function updatePreview() {
 
     const logoHtml = demoConfig.logo
         ? `<img src="${demoConfig.logo}" alt="Logo" style="width: 40px; height: 40px; border-radius: 50%;">`
-        : `<div style="width: 40px; height: 40px; background: ${demoConfig.brandColor}; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #000;">${demoConfig.businessName.substring(0, 2).toUpperCase()}</div>`;
+        : `<div style="width: 40px; height: 40px; background: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: ${demoConfig.brandColor};">${demoConfig.businessName.substring(0, 2).toUpperCase()}</div>`;
 
     preview.innerHTML = `
-        <div style="display: flex; flex-direction: column; height: 100%; background: #1a1a1a; border-radius: 8px; overflow: hidden; border: 2px solid ${demoConfig.brandColor};">
+        <div style="display: flex; flex-direction: column; height: 100%; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.15);">
             <!-- Chat Header -->
-            <div style="background: ${demoConfig.brandColor}; color: #000; padding: 15px; display: flex; align-items: center; gap: 10px;">
+            <div style="background: ${demoConfig.brandColor}; color: #fff; padding: 16px; display: flex; align-items: center; gap: 12px;">
                 ${logoHtml}
                 <div style="flex: 1;">
-                    <div style="font-weight: 700; font-size: 16px;">${demoConfig.businessName}</div>
-                    <div style="font-size: 12px; opacity: 0.8;">AI Assistant - Online</div>
+                    <div style="font-weight: 600; font-size: 15px;">${demoConfig.businessName}</div>
+                    <div style="font-size: 12px; opacity: 0.9; display: flex; align-items: center; gap: 5px;">
+                        <span style="width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block;"></span>
+                        Online
+                    </div>
                 </div>
             </div>
 
             <!-- Chat Messages -->
-            <div style="flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
-                <!-- Welcome Message -->
-                <div style="background: rgba(58, 181, 115, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid ${demoConfig.brandColor};">
-                    <div style="font-size: 14px; color: #fff;">Hi! I'm the AI assistant for ${demoConfig.businessName}. How can I help you today?</div>
+            <div style="flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; background: #f9fafb;">
+                <!-- Bot Message -->
+                <div style="background: #fff; padding: 12px 16px; border-radius: 18px; border: 1px solid #e5e7eb; max-width: 85%; font-size: 14px; color: #1f2937; line-height: 1.5; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                    Hi! I'm the AI assistant for ${demoConfig.businessName}. How can I help you today?
                 </div>
 
-                ${demoConfig.faqs.length > 0 ? `
-                <div style="margin-top: 10px;">
-                    <div style="font-size: 12px; color: #999; margin-bottom: 8px;">Quick questions:</div>
-                    ${demoConfig.faqs.slice(0, 3).map(faq => `
-                        <div style="background: #0a0a0a; padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; font-size: 13px; color: ${demoConfig.brandColor}; cursor: pointer;">
-                            ${faq.question}
-                        </div>
-                    `).join('')}
+                <!-- Sample User Message -->
+                <div style="background: ${demoConfig.brandColor}; padding: 12px 16px; border-radius: 18px 18px 4px 18px; max-width: 75%; font-size: 14px; color: #fff; align-self: flex-end; line-height: 1.5;">
+                    ${demoConfig.faqs.length > 0 ? demoConfig.faqs[0].question : 'What services do you offer?'}
                 </div>
-                ` : ''}
+
+                <!-- Bot Response -->
+                <div style="background: #fff; padding: 12px 16px; border-radius: 18px; border: 1px solid #e5e7eb; max-width: 85%; font-size: 14px; color: #1f2937; line-height: 1.5; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                    ${demoConfig.faqs.length > 0 ? demoConfig.faqs[0].answer : 'We offer a wide range of services tailored to your needs. How can I help you today?'}
+                </div>
             </div>
 
             <!-- Chat Input -->
-            <div style="padding: 15px; border-top: 1px solid #333;">
-                <div style="display: flex; gap: 10px; align-items: center; background: #0a0a0a; padding: 10px; border-radius: 8px; border: 1px solid #333;">
-                    <input type="text" placeholder="Type your message..." style="flex: 1; background: transparent; border: none; color: #fff; outline: none; font-size: 14px;">
+            <div style="padding: 16px; background: #fff; border-top: 1px solid #e5e7eb;">
+                <div style="display: flex; gap: 10px; align-items: center; background: #f9fafb; padding: 8px 12px; border-radius: 24px; border: 1.5px solid #e5e7eb;">
+                    <input type="text" placeholder="Type your message..." style="flex: 1; background: transparent; border: none; color: #1f2937; outline: none; font-size: 14px; padding: 8px 4px;">
                     <div style="background: ${demoConfig.brandColor}; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;">
                         <span style="color: #000; font-weight: 700;">→</span>
                     </div>
