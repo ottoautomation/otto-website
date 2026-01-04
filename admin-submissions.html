@@ -354,6 +354,96 @@
             font-size: 13px;
         }
 
+        .tab-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .tab-btn {
+            padding: 8px 16px;
+            border: 2px solid var(--color-border);
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+        }
+
+        .tab-btn.active {
+            background: var(--color-primary);
+            border-color: var(--color-primary);
+            color: white;
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        /* Chat Analytics Styles */
+        .chat-message-card {
+            background: white;
+            padding: var(--spacing-md);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: var(--spacing-md);
+            border-left: 4px solid var(--color-primary);
+        }
+
+        .chat-message-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-sm);
+            font-size: 12px;
+            color: var(--color-text-secondary);
+        }
+
+        .chat-message-content {
+            font-size: 14px;
+            color: var(--color-text);
+        }
+
+        .chat-page-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .page-stat-card {
+            background: white;
+            padding: var(--spacing-md);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-stat-card h4 {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .page-stat-card .value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        .page-stat-card .label {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            word-break: break-all;
+        }
+
         @media (max-width: 768px) {
             .submission-header {
                 flex-direction: column;
@@ -370,53 +460,104 @@
             .details-grid {
                 grid-template-columns: 1fr;
             }
+
+            .tab-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>OTTO Client Submissions</h1>
+            <div style="display: flex; align-items: center; gap: 24px;">
+                <h1>OTTO Admin</h1>
+                <div class="tab-buttons">
+                    <button class="tab-btn active" data-tab="submissions">Client Submissions</button>
+                    <button class="tab-btn" data-tab="chat">OTTO AI Chat</button>
+                </div>
+            </div>
             <div class="header-actions">
-                <button class="btn btn-secondary" onclick="refreshSubmissions()">
+                <button class="btn btn-secondary" onclick="refreshCurrentTab()">
                     Refresh
                 </button>
-                <button class="btn btn-secondary" onclick="exportAllSubmissions()">
+                <button class="btn btn-secondary" id="exportBtn" onclick="exportAllSubmissions()">
                     Export All
                 </button>
             </div>
         </header>
 
-        <div class="stats">
-            <div class="stat-card">
-                <h3>Total Submissions</h3>
-                <div class="value" id="totalSubmissions">0</div>
+        <!-- Submissions Tab -->
+        <div id="submissionsTab" class="tab-panel active">
+            <div class="stats">
+                <div class="stat-card">
+                    <h3>Total Submissions</h3>
+                    <div class="value" id="totalSubmissions">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Starter Plan</h3>
+                    <div class="value" id="starterCount">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Pro Plan</h3>
+                    <div class="value" id="proCount">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Elite Plan</h3>
+                    <div class="value" id="eliteCount">0</div>
+                </div>
             </div>
-            <div class="stat-card">
-                <h3>Starter Plan</h3>
-                <div class="value" id="starterCount">0</div>
+
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">All Submissions</button>
+                <button class="filter-btn" data-filter="starter">Starter</button>
+                <button class="filter-btn" data-filter="pro">Pro</button>
+                <button class="filter-btn" data-filter="elite">Elite</button>
             </div>
-            <div class="stat-card">
-                <h3>Pro Plan</h3>
-                <div class="value" id="proCount">0</div>
-            </div>
-            <div class="stat-card">
-                <h3>Elite Plan</h3>
-                <div class="value" id="eliteCount">0</div>
+
+            <div id="submissionsList" class="submissions-list">
+                <div class="empty-state">
+                    <h3>No submissions yet</h3>
+                    <p>Client onboarding submissions will appear here</p>
+                </div>
             </div>
         </div>
 
-        <div class="filters">
-            <button class="filter-btn active" data-filter="all">All Submissions</button>
-            <button class="filter-btn" data-filter="starter">Starter</button>
-            <button class="filter-btn" data-filter="pro">Pro</button>
-            <button class="filter-btn" data-filter="elite">Elite</button>
-        </div>
+        <!-- OTTO AI Chat Tab -->
+        <div id="chatTab" class="tab-panel">
+            <div class="stats">
+                <div class="stat-card">
+                    <h3>Total Messages</h3>
+                    <div class="value" id="chatTotalMessages">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Today's Messages</h3>
+                    <div class="value" id="chatTodayMessages">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Unique Sessions</h3>
+                    <div class="value" id="chatUniqueSessions">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Site</h3>
+                    <div class="value" style="font-size: 18px;">Otto Launch</div>
+                </div>
+            </div>
 
-        <div id="submissionsList" class="submissions-list">
-            <div class="empty-state">
-                <h3>No submissions yet</h3>
-                <p>Client onboarding submissions will appear here</p>
+            <h3 style="margin: 24px 0 16px; color: var(--color-text);">Page Breakdown</h3>
+            <div id="chatPageBreakdown" class="chat-page-breakdown">
+                <div class="empty-state">
+                    <p>Loading page breakdown...</p>
+                </div>
+            </div>
+
+            <h3 style="margin: 24px 0 16px; color: var(--color-text);">Recent Conversations</h3>
+            <div id="chatRecentMessages">
+                <div class="empty-state">
+                    <h3>No chat messages yet</h3>
+                    <p>Messages from OTTO AI on Otto Launch will appear here</p>
+                </div>
             </div>
         </div>
     </div>
@@ -826,11 +967,152 @@
             });
         });
 
+        // Tab switching
+        let currentTab = 'submissions';
+        const CHAT_API_URL = 'https://ottolaunch-checkout.ottoai-official.workers.dev';
+
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tab = this.dataset.tab;
+
+                // Update button states
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                // Update panel visibility
+                document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+                document.getElementById(tab + 'Tab').classList.add('active');
+
+                // Update export button visibility
+                document.getElementById('exportBtn').style.display = tab === 'submissions' ? 'inline-block' : 'none';
+
+                currentTab = tab;
+
+                // Load data for the tab
+                if (tab === 'chat') {
+                    loadChatStats();
+                }
+            });
+        });
+
+        // Refresh current tab
+        function refreshCurrentTab() {
+            if (currentTab === 'submissions') {
+                loadSubmissions();
+            } else if (currentTab === 'chat') {
+                loadChatStats();
+            }
+        }
+
+        // Load chat stats from Otto Launch API
+        async function loadChatStats() {
+            try {
+                const response = await fetch(`${CHAT_API_URL}/api/chat/stats`);
+                const data = await response.json();
+
+                if (data.success) {
+                    // Update stats
+                    document.getElementById('chatTotalMessages').textContent = data.stats.totalMessages || 0;
+                    document.getElementById('chatTodayMessages').textContent = data.stats.todayMessages || 0;
+                    document.getElementById('chatUniqueSessions').textContent = data.stats.uniqueSessions || 0;
+
+                    // Render page breakdown
+                    renderPageBreakdown(data.stats.pageBreakdown || []);
+
+                    // Render recent messages
+                    renderRecentMessages(data.stats.recentMessages || []);
+                }
+            } catch (error) {
+                console.error('Error loading chat stats:', error);
+                document.getElementById('chatRecentMessages').innerHTML = `
+                    <div class="empty-state">
+                        <h3>Error loading chat data</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Render page breakdown
+        function renderPageBreakdown(pages) {
+            const container = document.getElementById('chatPageBreakdown');
+
+            if (!pages || pages.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <p>No page data yet</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = pages.map(page => {
+                // Extract page name from URL
+                let pageName = page.page_url || 'Unknown';
+                try {
+                    const url = new URL(pageName);
+                    pageName = url.pathname === '/' ? 'Home' : url.pathname.replace(/\//g, '').replace('.html', '');
+                } catch (e) {
+                    pageName = pageName.split('/').pop() || pageName;
+                }
+
+                return `
+                    <div class="page-stat-card">
+                        <h4>${pageName}</h4>
+                        <div class="value">${page.count}</div>
+                        <div class="label">messages</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Render recent messages
+        function renderRecentMessages(messages) {
+            const container = document.getElementById('chatRecentMessages');
+
+            if (!messages || messages.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No chat messages yet</h3>
+                        <p>Messages from OTTO AI on Otto Launch will appear here</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = messages.map(msg => {
+                const date = new Date(msg.timestamp).toLocaleString();
+                let pageName = msg.page_url || 'Unknown';
+                try {
+                    const url = new URL(pageName);
+                    pageName = url.pathname === '/' ? 'Home' : url.pathname.replace(/\//g, '').replace('.html', '');
+                } catch (e) {
+                    pageName = pageName.split('/').pop() || pageName;
+                }
+
+                return `
+                    <div class="chat-message-card">
+                        <div class="chat-message-header">
+                            <span>Session: ${msg.session_id?.substring(0, 8) || 'Unknown'}...</span>
+                            <span>${pageName} | ${date}</span>
+                        </div>
+                        <div class="chat-message-content">${msg.message || ''}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
         // Initialize
         loadSubmissions();
 
         // Auto-refresh every 30 seconds
-        setInterval(loadSubmissions, 30000);
+        setInterval(() => {
+            if (currentTab === 'submissions') {
+                loadSubmissions();
+            } else if (currentTab === 'chat') {
+                loadChatStats();
+            }
+        }, 30000);
     </script>
 </body>
 </html>
